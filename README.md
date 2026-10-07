@@ -71,6 +71,42 @@ The config schema is `packages/shared/src/group-setup.ts`. Use the verified offi
 
 Bootstrap rejects mock/unrecognized forwarders unless `developmentFixture: true`, validates the Devnet genesis and forwarder state ownership, and rejects a second mint bootstrap once its public output records a mint. Keep public receipt files and recover a partially prepared setup instead of minting again.
 
+## Solana accounts, in plain language
+
+If you are new to Solana, think of VowPool as using different account types for people, token balances and app records. These are related, but they are not interchangeable:
+
+### People and signatures
+
+| Item | Plain-language meaning | VowPool use |
+|---|---|---|
+| Member wallet | A public Solana address paired with a private signing key held by the member's wallet app, such as Phantom | Identifies a member and signs that member's transactions. Share the public address for the roster; never share the recovery phrase or private key. |
+| Wallet signature | A cryptographic approval made by the wallet | Proves that the member approved a transaction. The VowPool server does not sign member actions. |
+
+Connecting Phantom does not automatically add someone to the group. The member's public address must already be in the fixed roster configured before group initialization.
+
+### Token definition and token balances
+
+| Item | Plain-language meaning | VowPool use |
+|---|---|---|
+| Token program | Shared Solana software that validates token accounts and performs token transfers | Processes the test-token transfers. It is not a VowPool group account. |
+| Mint account | The onchain definition of one token type, including its decimal precision | Defines the group's shared Devnet test token. The tokens have no real-money value. |
+| Member token account (ATA) | A token balance account associated with a particular wallet and mint; think of it as that wallet's pocket for this token | Holds the member's test-token balance. A member can have a different token account for each mint. |
+| Group vault | A token account controlled by the VowPool program | Holds staked test tokens. The program transfers them only under the recorded rules. |
+
+The member wallet signs transfers; it does not itself store SPL token balances. A member's ATA and the group vault are both token accounts, but their owners and purposes differ.
+
+### VowPool's onchain records
+
+| Item | Plain-language meaning | VowPool use |
+|---|---|---|
+| Group account | VowPool's onchain settings and accounting record for the fixed group | Stores the roster, mint and vault addresses, treasurer, fixed treasury recipient, CRE policy and accounting totals. It does not itself hold tokens. |
+| Commitment account | One promise's onchain record | Stores the owner, stake amount, mode, reviewers, deadlines, status and hashes that bind the commitment to its terms. Each commitment has its own account. |
+| PDA (program-derived address) | An address deterministically derived from inputs and a program ID | VowPool uses PDAs for group and commitment records, and as the vault's token authority. A PDA has no member's private key; the program can authorize actions for it when its rules pass. |
+
+For example, when a member stakes 5 test tokens, their wallet signs, 5 tokens move from their member ATA to the group vault, the commitment account changes to active, and the group account updates its accounting. The token program executes the transfer; the VowPool program checks that it is allowed.
+
+In short: **wallets identify and sign; token accounts hold balances; the token program moves tokens; VowPool's group and commitment accounts store the rules and records.** Solana also has shared system and token program accounts that are not created once per commitment.
+
 ## CRE verification
 
 ```sh
