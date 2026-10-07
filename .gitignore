@@ -11,3 +11,6 @@ dist/
 *keypair*.json
 *.wasm
 *.log
+
+*.tsbuildinfo
+.cre_build_tmp.js
