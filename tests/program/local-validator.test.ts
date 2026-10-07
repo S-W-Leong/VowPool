@@ -1,0 +1,28 @@
+import {test,expect} from 'bun:test';
+import {Program,AnchorProvider,Wallet,BN,type Idl} from '@coral-xyz/anchor';
+import {Connection,Keypair,PublicKey,Transaction,SystemProgram,sendAndConfirmTransaction} from '@solana/web3.js';
+import {createMint,getOrCreateAssociatedTokenAccount,mintTo,getAccount,TOKEN_PROGRAM_ID,ASSOCIATED_TOKEN_PROGRAM_ID} from '@solana/spl-token';
+import {readFileSync} from 'node:fs';
+const run=process.env.VOWPOOL_RPC_SMOKE==='1'?test:test.skip;
+run('real local-validator peer creation, funding, approval and owner refund',async()=>{
+ const rpc=new Connection('http://127.0.0.1:8899','confirmed'),owner=Keypair.generate(),reviewer=Keypair.generate();
+ const airdrop=await rpc.requestAirdrop(owner.publicKey,10e9);await rpc.confirmTransaction(airdrop,'confirmed');
+ await sendAndConfirmTransaction(rpc,new Transaction().add(SystemProgram.transfer({fromPubkey:owner.publicKey,toPubkey:reviewer.publicKey,lamports:1e8})),[owner]);
+ const program=new Program(JSON.parse(readFileSync('target/idl/vowpool.json','utf8')) as Idl,new AnchorProvider(rpc,new Wallet(owner),{commitment:'confirmed'}));
+ const mint=await createMint(rpc,owner,owner.publicKey,null,6);const source=await getOrCreateAssociatedTokenAccount(rpc,owner,mint,owner.publicKey);await mintTo(rpc,owner,mint,source.address,owner,2_000_000n);
+ const {getAssociatedTokenAddressSync}=await import('@solana/spl-token');
+ const [freshGroup]=PublicKey.findProgramAddressSync([Buffer.from('group'),owner.publicKey.toBuffer()],program.programId);
+ const freshVault=getAssociatedTokenAddressSync(mint,freshGroup,true);
+ const forwarder=new PublicKey('Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkgMQHGhGusJA');const [state]=PublicKey.findProgramAddressSync([Buffer.from('state')],forwarder);
+ const policy={forwarder,forwarderState:state,workflowCid:Array(32).fill(1),workflowName:Array(10).fill(2),workflowOwner:Array(20).fill(3)};
+ const init=await program.methods.initializeGroup({roster:[owner.publicKey,reviewer.publicKey],treasurer:reviewer.publicKey,treasuryRecipient:reviewer.publicKey,policy}).accounts({founder:owner.publicKey,group:freshGroup,mint,vault:freshVault}).instruction();
+ await sendAndConfirmTransaction(rpc,new Transaction().add(init),[owner]);
+ const now=Math.floor(Date.now()/1000),nonce=new BN(1);const [c]=PublicKey.findProgramAddressSync([Buffer.from('commitment'),freshGroup.toBuffer(),owner.publicKey.toBuffer(),nonce.toArrayLike(Buffer,'le',8)],program.programId);
+ const create=await program.methods.createCommitment({nonce,termsHash:Array(32).fill(9),amount:new BN(1250000),goalDeadline:new BN(now+300),reviewDeadline:new BN(now+600),mode:0,reviewers:[reviewer.publicKey],github:null}).accounts({owner:owner.publicKey,group:freshGroup,commitment:c}).instruction();
+ await sendAndConfirmTransaction(rpc,new Transaction().add(create),[owner]);
+ const ack=await program.methods.acknowledge().accounts({member:reviewer.publicKey,group:freshGroup,commitment:c}).instruction();await sendAndConfirmTransaction(rpc,new Transaction().add(ack),[reviewer]);
+ const activate=await program.methods.activate().accounts({owner:owner.publicKey,group:freshGroup,commitment:c,mint,vault:freshVault,source:source.address}).instruction();await sendAndConfirmTransaction(rpc,new Transaction().add(activate),[owner]);expect((await getAccount(rpc,freshVault)).amount).toBe(1250000n);
+ const approve=await program.methods.approve().accounts({member:reviewer.publicKey,group:freshGroup,commitment:c}).instruction();await sendAndConfirmTransaction(rpc,new Transaction().add(approve),[reviewer]);
+ expect((await (program.account as any).commitment.fetch(c)).status).toEqual({succeeded:{}});
+ const refund=await program.methods.releaseRefund().accounts({caller:reviewer.publicKey,owner:owner.publicKey,group:freshGroup,commitment:c,mint,vault:freshVault,destination:source.address}).instruction();await sendAndConfirmTransaction(rpc,new Transaction().add(refund),[reviewer]);expect((await getAccount(rpc,source.address)).amount).toBe(2000000n);
+},30000);

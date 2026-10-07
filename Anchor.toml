@@ -12,7 +12,7 @@ vowpool = "A2JT4HUJYEd3BL5xPXRiaXjvoFSMetY8zvLEPmRAxXPf"
 cluster = "Localnet"
 wallet = ".tools/keys/local-payer.json"
 [scripts]
-test = "bun run test:program"
+test = "VOWPOOL_RPC_SMOKE=1 bun run test:program"
 [[test.genesis]]
 address = "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkgMQHGhGusJA"
 program = "target/deploy/mock_forwarder.so"

@@ -31,3 +31,7 @@ SBF Rust/Cargo is 1.84.0 from platform-tools v1.48. Cargo.lock pins compatible t
 ```sh
 CRE_SOLANA_PRIVATE_KEY="$PWD/.tools/keys/cre-transmitter.json" .tools/bin/cre workflow simulate workflows/accountability --project-root cre --target local-simulation --non-interactive --trigger-index 0
 ```
+
+Full lifecycle verification: 24 compiled SBF tests in LiteSVM 0.6.0, plus one real local-validator RPC test creating an SPL mint/group, funding an A commitment, recording acknowledgment/approval and returning the exact stake to the owner. `anchor test --skip-build --skip-deploy --skip-local-validator`: **25 passed, 0 failed**. Controlled-clock tests retain the actual 172800-second D grace. Frozen destination ATA makes the token CPI fail while the already-recorded refund remains retryable; thaw/retry succeeds. Donations cannot create pool credit; copied account data at a substituted PDA is rejected.
+
+`--skip-deploy` is necessary for a program preloaded by validator genesis (genesis loader authority is the system program). Reloading the current compiled binary into a fresh local ledger fixed an initial RPC initializer mismatch; changing an on-disk `.so` does not replace an already-running validator's genesis program.
