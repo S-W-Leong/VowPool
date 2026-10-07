@@ -4,7 +4,7 @@
 
 **Goal:** Ship a runnable accountability group demo with wallet-authorized peer verification, SPL test-token escrow, and an authenticated GitHub-to-CRE-to-Solana verification path within the user's remaining eight-hour window.
 
-**Architecture:** A Next.js web app reads authoritative accounts from one Anchor program on Solana Devnet. Server routes store supporting terms/evidence and draft user-reviewed AI configuration; they have no member keys or settlement authority. A separate TypeScript CRE workflow reads public GitHub facts and submits compact reports through the Keystone Forwarder.
+**Architecture:** A Next.js web app reads authoritative accounts from one Anchor program on Solana Devnet. Server routes store supporting terms/evidence and draft user-reviewed AI configuration; they have no member keys or settlement authority. A separate TypeScript CRE workflow uses its own cron trigger and HTTP capability to read Solana JSON-RPC at `https://api.devnet.solana.com`, decode frozen commitment conditions, read public GitHub facts and submit compact reports through the Keystone Forwarder. The RPC endpoint is configurable; a separate reader cron/indexer is outside the initial implementation.
 
 **Tech Stack:** TypeScript, Next.js App Router, React, CSS, Zod, Solana wallet adapter/web3.js, Rust/Anchor, original SPL Token Program, CRE TypeScript SDK, Bun, Vitest, Anchor/local-validator integration tests.
 
@@ -27,6 +27,10 @@
 - Simulation and live CRE forwarders are distinct configurations. Simulation logs are not Devnet settlement receipts.
 - No upload pipeline, recurrence, disputes, notifications, membership management, private GitHub repositories or real funds.
 - No claim of immutability while program upgrade authority is retained. Keep it during debugging; publish its actual state in README.
+- Verified BuilderBase deadline: 7 October 2026, 11:59 PM GMT+8 (Asia/Singapore). Finish submission before this cutoff.
+- Both tracks require a GitHub repository (public or judge access), live URL/hosted demo, and Google Drive link to a `.ppt` or `.keynote` file. Google Slides, Gamma and Vercel page links are not accepted as the slides artifact. Embed screen recordings directly into the deck; no external video links in their place. Slides lock at submission.
+- Chainlink additionally requires evidence of a successful CRE CLI simulation OR live CRE network deployment. Simulation satisfies this evidence requirement; it still does not establish an actual Solana transaction or live automation.
+- Organizer announcement describes main track plus one partner track, with teammates on the same partner track. A team is required even for a solo entrant. Do not assume eligibility for both partner prizes.
 
 ## Review Focus
 
@@ -38,7 +42,7 @@
 
 ## Execution and time allocation
 
-Recommended approach: main-chat sequential execution. The supplied AGENTS.md maps subagent work to sequential work, so no delegation is needed.
+Recommended approach: main-chat sequential execution. The supplied AGENTS.md maps subagent work to sequential work, so no delegation is needed. Verify a working CRE simulation early; live deployment is a stretch goal once core Solana flows work, since the Chainlink dashboard accepts successful simulation as submission evidence.
 
 | Elapsed build time | Deliverable |
 | --- | --- |
@@ -161,16 +165,22 @@ These are checkpoints from the actual build start, not a new allocation at each 
 
 ### Task 6: CRE GitHub verification and settlement processing
 
-**Files:** CRE workflow files/config, generated bindings, shared evaluator tests, integration documentation.
+**Files:** CRE workflow files/config (including a focused RPC reader/decoder), generated bindings, shared evaluator and RPC-reader tests, integration documentation.
+
+**Integration clarification (7 October 2026):** Continue the existing implementation and task order. The mentor advice confirms the HTTP JSON-RPC approach already specified in design section 6; it does not require a chain migration or new scheduler. First prove a real commitment read through native CRE HTTP using public Devnet RPC, before completing discovery/report delivery. The executing chat has reported public-RPC rate limiting, so permit a user-configured dedicated Devnet endpoint if repeated throttling blocks the demo. This changes transport configuration, not financial rules, oracle authentication or the remaining time budget.
 
 **Interfaces:**
-- Cron trigger every 30 seconds; discovery batch max 5. Read known group/commitment accounts via a fixed configured Solana RPC using CRE HTTP capability; server candidate list is an untrusted discovery hint.
+- Cron trigger every 30 seconds; discovery batch max 5. Default configured RPC to `https://api.devnet.solana.com`, verify Devnet genesis before integration, and use CRE HTTP POST with documented JSON-RPC request encoding. First read known real group/commitment addresses; prefer a single `getMultipleAccounts` request per batch, with `encoding: 'base64'` and `commitment: 'confirmed'`. Decode using the actual deployed program's account layout/IDL, preserving u64/i64 values without JS precision loss.
+- Validate account owner, discriminator, bounded data length, group linkage, PDA derivation and recomputed frozen GitHub configuration hash before evaluation. Configure program/group identities explicitly. Candidate addresses from config or `/api/candidates` are discovery hints only; they cannot supply authoritative terms or outcomes. Keep that API optional; use filtered program-account discovery if needed, with filters derived from the actual account layout rather than guessed offsets.
+- Reach consensus on bounded, validated semantic fields used for decisions, not raw RPC envelopes/context slots or unrelated changing GitHub fields. Log the observed slot separately for diagnostics. A disagreement on relevant state skips/retries the candidate; it cannot authorize an outcome. Agreement among DON nodes using one RPC endpoint does not independently prove that provider's chain data.
+- HTTP 429/403/5xx, JSON-RPC `error`, timeout, null/malformed accounts or validation failure produce read-unavailable/invalid diagnostics and no outcome report for the affected candidate. Retry on a later scheduled execution; honor `Retry-After` where supported without an unbounded handler wait or tight retry loop. A failed read never means failed commitment. Keep requests/responses within the installed CRE capability limits. One bad candidate must not block valid candidates.
 - Public GitHub request goes only to `https://api.github.com/repos/{owner}/{repo}/pulls/{number}` with validated path values; disable redirects and cap decoded payload size at 256 KiB. Response 429/404/5xx, timeout or invalid shape => UNKNOWN, log retry state, no failure report.
 - Use CRE HTTP consensus over schema-validated observations and fixed deterministic evaluation; use generated Solana bindings from the actual program IDL.
 - Freeze authorized workflow identity before activating D commitments; signed metadata CID/name/owner must match. Workflow/policy update requires a new group/policy for new commitments, not rewriting active terms.
 
-- [ ] Add tests using captured schema-valid GitHub responses for success/non-qualifying/unknown cases and corrupted chain/config hash. Ensure malformed candidates cannot block subsequent items.
-- [ ] Implement cron discovery/read, GitHub evaluation and compact outcome report delivery. Before goal deadline, incomplete observations remain pending; retries never alter goal/hard deadlines.
+- [ ] Add RPC-reader tests for 429, JSON-RPC errors, null account, wrong program owner/discriminator/group/PDA, truncated data and corrupted configuration hash; assert no outcome report for invalid/unavailable reads and continued processing of valid candidates. Test differing context slots with identical relevant fields, relevant-state disagreement and u64 values above JS safe integer precision. Retain GitHub success/non-qualifying/unknown fixtures.
+- [ ] Implement the direct HTTP RPC reader and exercise it in native CRE simulation against a real Devnet group/commitment. Record public addresses, observed slot, decoded fields and matching configuration hash in `docs/integration-check.md`. Cross-check with the existing chain reader. Label this as a real RPC read in local simulation, with no live DON or settlement claim; preserve the existing receiver-free sample simulation as a separately labeled target.
+- [ ] Complete bounded cron discovery, GitHub evaluation and compact outcome report delivery using the verified reader. Before goal deadline, incomplete observations remain pending; retries never alter goal/hard deadlines. If public RPC repeatedly throttles or blocks access, switch only the configured Devnet endpoint using a user-provided provider credential kept in CRE secrets; do not introduce a separate cron service or weaken receiver checks.
 - [ ] Implement peer-expiry, unpaid-refund and post-hard-deadline unresolved processing reports that reuse the program's public guarded transition logic. Separate refund processing from outcome recording so failed token delivery cannot erase success.
 - [ ] Generate bindings with `cre generate-bindings solana`; compile and simulate against staging addresses. Record dry-run output separately from transaction receipts.
 - [ ] If approved tenant access is available, deploy through CRE private registry, confirm live forwarder settings, and demonstrate actual merged PR -> authorized on_report -> recorded success -> exact owner refund. Capture explorer receipt and workflow execution ID. Verify unauthorized workflow rejection.
@@ -190,7 +200,7 @@ These are checkpoints from the actual build start, not a new allocation at each 
 - [ ] Rehearse two-wallet peer flow: create, acknowledge, fund, save evidence, approve, release refund. Demonstrate another A/C goal expiring into pool and treasury restrictions. Verify B unanimity separately.
 - [ ] Rehearse D AI draft/manual confirmation, active stake, actual PR merge, CRE evaluation/report and refund if live integration is available; show a GitHub API failure remaining UNKNOWN. Demonstrate unresolved 48-hour boundary on local validator.
 - [ ] Browser-check the complete flow, refreshing pages and switching roles; inspect actual chain accounts/balances and receipts. No replayed local logs as confirmation.
-- [ ] Write README commands, environment variables, test/deployment addresses, trust boundaries, retained/removed upgrade authority, data persistence, CRE execution limits and fallback processing steps. Prepare a short recording script and track-specific pitch in `docs/demo.md`; record through available supported tooling or hand off only the user-operated recording step.
+- [ ] Write README commands, environment variables, test/deployment addresses, trust boundaries, retained/removed upgrade authority, data persistence, CRE execution limits and fallback processing steps. Prepare a short recording script and track-specific pitch in `docs/demo.md`; record through available supported tooling or hand off only the user-operated recording step. Create the required `.ppt`/`.keynote` deck with recording embedded and provide its judge-accessible Google Drive link; separately provide repo, hosted demo and Chainlink simulation/deployment evidence.
 - [ ] Reserve final hour for recording/submission. List remaining limitations explicitly; do not claim hackathon entry was submitted without a submission receipt.
 
 ## Research snapshot (7 October 2026)
@@ -201,13 +211,18 @@ These are checkpoints from the actual build start, not a new allocation at each 
 - CRE release API reports CLI v1.37.0 and npm reports TypeScript SDK 1.23.0. Current docs require CLI >=1.29.0 for TypeScript binding generation. Choose/pin compatible versions during toolchain checkpoint rather than mixing older tutorial examples.
 - Native Solana write docs provide separate mock/live forwarder addresses and explicitly describe simulation as not broadcasting a transaction. Live addresses must be cross-checked against tenant-supported chains and deployed state.
 - Official upstream forwarder source exposes authenticated 64-byte workflow metadata with the offsets specified in Task 1. Source inspection is a feasible authentication design, not proof of live deployed integration.
-- Live CRE deploy approval/account access, dual-track event rules, member browser wallets/public keys and configured AI provider access remain unconfirmed. None prevent local implementation; they can block particular live demo claims.
+- Live CRE deploy approval/account access, eligibility for multiple partner prizes, member browser wallets/public keys and configured AI provider access remain unconfirmed. None prevent local implementation; they can block particular live demo claims. Subsequent authenticated BuilderBase inspection confirmed successful simulation is acceptable CRE evidence, main-plus-partner entry rules and required submission artifacts above. At inspection Solana check-ins showed 2/2; Chainlink showed 1/2 with RSVP closed, which needs organizer clarification if selecting that track.
 
 References:
 - https://docs.chain.link/cre/guides/workflow/using-solana-client/onchain-write-ts
+- https://docs.chain.link/cre/capabilities/http
+- https://solana.com/docs/rpc/http/getmultipleaccounts
+- https://solana.com/docs/references/clusters
 - https://docs.chain.link/cre/guides/operations/deploying-workflows
 - https://github.com/smartcontractkit/chainlink-solana/blob/develop/docs/forwarder/README.md
 - https://github.com/smartcontractkit/chainlink-solana/blob/develop/contracts/programs/keystone-forwarder/src/lib.rs
+- https://builderbase.com/track-dashboard/solana-best-use-of-solana/overview (authenticated portal)
+- https://builderbase.com/track-dashboard/chainlink-best-workflow-with-cre/overview (authenticated portal)
 
 ## Plan self-review
 

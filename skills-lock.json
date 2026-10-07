@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "chainlink-cre-skill": {
+      "source": "smartcontractkit/chainlink-agent-skills",
+      "sourceType": "github",
+      "skillPath": "chainlink-cre-skill/SKILL.md",
+      "computedHash": "f4d1dd3aa882b7b9325359fa5eebc40ef22232a14be3ac89bb213ceff8ca34e6"
+    },
+    "solana-dev": {
+      "source": "solana-foundation/solana-dev-skill",
+      "sourceType": "github",
+      "skillPath": "skills/solana-dev/SKILL.md",
+      "computedHash": "fc278aba173b0596f43c6db6e6c3a2875c96d62281e243e168f8fdebe07609ea"
+    }
+  }
+}
