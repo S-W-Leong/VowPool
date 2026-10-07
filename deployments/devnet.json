@@ -1,0 +1,22 @@
+{
+  "network": "solana-devnet",
+  "genesisHash": "EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG",
+  "programId": "A2JT4HUJYEd3BL5xPXRiaXjvoFSMetY8zvLEPmRAxXPf",
+  "programData": "9oMTFFjho8qDmhzbg3aVDjTdMZw9hwnKt35fvTdvy1ke",
+  "upgradeAuthority": "4SrzkRNsAcKdeN7k7TNUvUzAdZWwg8dgckpJ2tmBZ3DB",
+  "deploySignature": "5X4VSGbKZnvjEpqPc8YS27jKG8yniwHKbYskB37bjAHZXGsKi7to3xa5LtTaENi2d9Nmcb94AUbhQaXTNZ4tN8Ac",
+  "deploySlot": 508399160,
+  "programBytes": 428800,
+  "group": null,
+  "mint": null,
+  "vault": null,
+  "creLiveDeployment": false,
+  "note": "Program deployed and account checked. Fixed roster and authorized CRE policy are pending. Upgrade authority retained. Test tokens only.",
+  "funding": {
+    "initialDeployerSol": "5",
+    "initialTransmitterSol": "0.1",
+    "postDeployDeployerLamports": "2817844040",
+    "postDeployTransmitterLamports": "100000000",
+    "confirmedBalanceSlot": 508401948
+  }
+}
