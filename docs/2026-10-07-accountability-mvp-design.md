@@ -2,6 +2,10 @@
 
 Date: 7 October 2026 · Timezone: Asia/Singapore
 
+Approved UX update, 7 October 2026: connected founders can create their own accountability group and invite 1–7 public wallet addresses. Each group freezes its 2–8-member roster, treasurer and treasury recipient at creation; the existing PDA allows one group per founder. Groups share the demo test mint but retain separate vaults and accounting. Invitation links provide access for already-listed wallets. Post-creation membership editing remains deferred. The demo service offers bounded, wallet-signed test-token/SOL grants so judges can try the flow.
+
+After final required approval, the funded app service automatically submits the permissionless refund instruction, with background retry while the server runs. The owner has no normal payout action. Approval/outcome and token delivery remain separate onchain transactions; failed delivery preserves entitlement, and a manual recovery action remains available. The service never signs member actions or establishes outcomes. Local CRE simulation is acceptable for this demo; actual Solana Devnet writes remain required. This approved update supersedes the earlier single-group and owner payout UI scope below.
+
 Status: Architecture updated around 2:42pm Singapore time on 7 October 2026 following approval of four verification modes and AI-assisted configuration. Solana Devnet remains the authoritative ledger and escrow; Chainlink CRE also verifies GitHub commitments. No implementation is included. The concrete automated grace policy below is an explicit MVP default for review.
 
 ## 1. Product purpose
@@ -163,7 +167,7 @@ Creation is manual; no automatic chain of punishments is generated. If time is t
 
 ## 5. Program permissions and accounting
 
-The demo program has a fixed group roster, one fixed token mint and one fixed treasurer. There is no active-term editing, arbitrary outcome override or administrator rescue of active stakes. Deploy and test first, then remove the program upgrade authority before claiming that the maintainer cannot replace its logic. Publish verification of the final authority state. If upgrade authority is retained during development, disclose that remaining maintainer power; do not claim immutability yet.
+Each group has a fixed roster, token mint and treasurer. Founders create separate groups using the shared demo mint; vaults and accounting remain separate. There is no active-term editing, arbitrary outcome override or administrator rescue of active stakes. Deploy and test first, then remove the program upgrade authority before claiming that the maintainer cannot replace its logic. Publish verification of the final authority state. If upgrade authority is retained during development, disclose that remaining maintainer power; do not claim immutability yet.
 
 Suggested public operations: create commitment, acknowledge reviewer role, fund/activate, approve completion, release refund, settle expired commitment, receive authenticated D reports, resolve unverified D commitments after the hard deadline, withdraw communal funds, and read commitments/balances. Exact function signatures belong in the implementation plan.
 
@@ -209,7 +213,7 @@ CRE network deployment requires access approval. Confirm account access, Devnet 
 
 The approved visual direction is minimal Pact Club: warm ivory, forest green, editorial serif headings, readable sans-serif controls and a restrained ripple mark. Use one navigation row: Commitments, Reviews, Pool. No repeated tabs or dashboard sidebar.
 
-Commitments shows the connected member’s promises, a compact summary of locked stakes/refunds and a quiet link to the shared pool. Reviews contains reviewer invitations and eligible completion reviews; role acceptance and approval remain separate actions on the detail view. Owner funding and refund actions remain on their commitments. Pool contains the available communal budget, group commitments and public account/rule details, with treasury controls limited to the existing authorized treasurer. Permissionless expiry/unresolved/refund actions remain accessible through group commitment details. There are no automated messaging reminders.
+Commitments shows the connected member’s promises, a compact summary of locked stakes/refunds and a quiet link to the shared pool. Connected wallets can create a group, choose among their groups and copy an invitation link. Reviews contains reviewer invitations and eligible completion reviews; role acceptance and approval remain separate actions on the detail view. Owner funding remains on their commitments; refunds are delivered automatically with manual recovery in details. Pool contains the available communal budget, group commitments and public account/rule details, with treasury controls limited to the existing authorized treasurer. Permissionless expiry/unresolved/refund actions remain accessible through group commitment details. There are no automated messaging reminders.
 
 Each list row shows the goal, stake, one relevant deadline/status and a next action. Full terms, verification mode, owner, reviewer records and original terms export live in the focused detail view. Creation and detail replace the list while open. Financial/status values still come from confirmed program accounts; unavailable metadata is explicitly labeled. Keep wallet transaction phases and Devnet receipts visible. This presentation change does not alter permissions, settlement rules or custody.
 
@@ -225,7 +229,7 @@ Require confirmation of a mode-specific summary before wallet submission. A/B/C 
 
 ### Commitment detail
 
-Show frozen terms, reviewer acknowledgment/approval list, evidence notes/links, progress and chain event history. Contextual actions: Accept reviewer role, Lock stake, Submit evidence, Approve completion, Release refund, Process expired commitment, Create follow-up commitment.
+Show frozen terms, reviewer acknowledgment/approval list, evidence notes/links, progress and chain event history. Contextual actions: Accept reviewer role, Lock stake, Submit evidence, Approve completion, Process expired commitment, Create follow-up commitment. A pending entitled refund shows automatic processing and a collapsible manual recovery action.
 
 D details show frozen configuration, last check status, accepted oracle facts/result and report transaction receipt. Hide human “Approve completion”; show “Resolve unverified” only after the hard deadline. Local logs are diagnostic, not recorded completion.
 
@@ -239,11 +243,11 @@ An approved-but-unpaid commitment reads “Approved — refund available/process
 
 ## 8. Build scope and cuts
 
-Core: one group, fixed members, one test network/token, all four verification modes, onchain acknowledgment/approval, monetary escrow, expiry, pool accounting, offchain terms/evidence note and URL, dashboard/detail/form, AI-assisted configuration with manual fallback, one public GitHub PR template, authenticated CRE verification/expiry demonstrations, D retry/unresolved handling and direct-call processing fallback.
+Core: self-service groups with fixed members, one test network/token, all four verification modes, onchain acknowledgment/approval, monetary escrow, automatic refund delivery, expiry, pool accounting, offchain terms/evidence note and URL, dashboard/detail/form, AI-assisted configuration with manual fallback, one public GitHub PR template, authenticated CRE verification/expiry demonstrations, D retry/unresolved handling and direct-call processing fallback.
 
 Physical follow-up should reuse zero-stake commitments after the monetary loop is stable. Treasury withdrawal must be correctly restricted in the program; its UI can wait.
 
-Defer group management, recurring goals, daily subgoals, partial refunds, reviewer replacement, cancellation after funding, rejections/disputes, notifications, upload pipelines, meeting transcription, AI judging, arbitrary generated verification programs, extra GitHub/CI templates, private repositories/OAuth, payment-provider verification, multiple networks and real funds.
+Defer post-creation membership management, recurring goals, daily subgoals, partial refunds, reviewer replacement, cancellation after funding, rejections/disputes, notifications, upload pipelines, meeting transcription, AI judging, arbitrary generated verification programs, extra GitHub/CI templates, private repositories/OAuth, payment-provider verification, multiple networks and real funds.
 
 If time slips, cut uploads, progress feeds, polished summaries and physical-follow-up conveniences before cutting authoritative approvals, escrow accounting or the GitHub-to-CRE-to-Solana demonstration. Keep AI to one structured drafting call; do not build an autonomous agent or template-builder UI. Do not substitute a database approval for an onchain approval to save time.
 

@@ -8,7 +8,7 @@ export function PactHeader({section,onNavigate,reviewCount,wallet}:{section:Sect
 }
 
 export function BalanceSummary({active,refundable,pool,onPool,onRefunds}:{active:string;refundable:string;pool:string;onPool:()=>void;onRefunds:()=>void}){
- return <section className="balance-summary" aria-label="Confirmed balances"><div className="personal-balances"><p><strong>{active}</strong><span>test tokens locked</span></p><button className="refund-summary" onClick={onRefunds}><strong>{refundable}</strong><span>ready to refund</span></button></div><button className="pool-summary" onClick={onPool}><img src="/ripple-mark.png" alt="" width="27" height="27"/><span>Shared pool · {pool} test tokens</span><span aria-hidden="true">→</span></button></section>;
+ return <section className="balance-summary" aria-label="Confirmed balances"><div className="personal-balances"><p><strong>{active}</strong><span>test tokens locked</span></p><button className="refund-summary" onClick={onRefunds}><strong>{refundable}</strong><span>refunds processing</span></button></div><button className="pool-summary" onClick={onPool}><img src="/ripple-mark.png" alt="" width="27" height="27"/><span>Shared pool · {pool} test tokens</span><span aria-hidden="true">→</span></button></section>;
 }
 
 export type CommitmentRowData={id:string;goal:string;summary:string;status:string;tone:'neutral'|'pending'|'success'|'attention';action?:string};

@@ -1,0 +1,13 @@
+{
+  "mode": "staging",
+  "schedule": "*/30 * * * * *",
+  "chainSelector": "16423721717087811551",
+  "rpcUrl": "https://api.devnet.solana.com",
+  "receiverProgramId": "A2JT4HUJYEd3BL5xPXRiaXjvoFSMetY8zvLEPmRAxXPf",
+  "group": "5rTKq4ZmSdfVEmfu2T8MSNogueiearGSwSf57UzzYynZ",
+  "forwarderProgramId": "7kuEAA3mSC1Tz8gQjnvH7bKFda9xSPRRin9SZbH49cNK",
+  "forwarderState": "5Tipz3yhTBdVsDbaBxZkrp7Gjf3brGq5SKkxReefPMP7",
+  "candidateAddresses": [
+    "5rTKq4ZmSdfVEmfu2T8MSNogueiearGSwSf57UzzYynZ"
+  ]
+}

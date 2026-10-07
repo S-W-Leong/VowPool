@@ -1,8 +1,8 @@
 # VowPool
 
-Commitment escrow for a fixed accountability group on Solana Devnet. Members freeze their goal, stake, verifier policy and deadlines before funding. Approval returns the stake. Missing peer approval moves it to the communal budget.
+Commitment escrow for accountability groups on Solana Devnet. Any connected founder can create a group with a fixed roster. Members freeze their goal, stake, verifier policy and deadlines before funding. Final approval automatically returns the stake through the demo refund service. Missing peer approval moves it to the communal budget.
 
-**Test tokens only.** The program is deployed with upgrade authority retained. The app and tests implement four modes. CRE native simulation and real Devnet writes through the official mock forwarder work. Live DON deployment is unavailable for the current CRE account. The actual user group, member-wallet rehearsal, AI provider call and submission recording remain pending.
+**Test tokens only.** The program is deployed with upgrade authority retained. The app and tests implement four modes. CRE native simulation and real Devnet writes through the official mock forwarder work. Local CRE simulation is accepted for this demo; no workflow deployment is required. The browser-demo roster and custom mint are prepared and both member wallets are funded, with independent checks in `deployments/demo-bootstrap-verification.json`. Founder initialization, member-wallet rehearsal, AI provider call and submission recording remain pending. Live DON authentication is unverified.
 
 ## Run locally
 
@@ -58,7 +58,34 @@ The exporter checks Devnet, the deployed executable, actual loader metadata and 
 
 Current rehearsal preview: [temporary VowPool fixture](https://buyer-strand-hours-ross.trycloudflare.com). It depends on this machine and its SQLite disk staying available. Draft presentation files and their verification notes are in `deliverables/`; recording and final upload are pending.
 
-## Prepare the actual fixed group
+## Create your group in the app
+
+1. Connect a browser wallet on Devnet and choose **Create your group**.
+2. Enter 1–7 invited public wallet addresses. Your founder wallet is included automatically. Choose a treasurer and review the frozen roster and treasury destination.
+3. If your wallet needs demo funding, sign the funding message, then sign the onchain group creation transaction. No group wallet or keypair needs to be created manually.
+4. Copy the invitation link. Invited members open it and connect their own matching wallet; this app does not send messages on their behalf.
+5. Create a commitment, complete any reviewer acknowledgments and lock the stake. After final approval, the server returns it automatically. Check the refund receipt and confirmed balance.
+
+Judges can use their own wallets and groups. The existing program allows one group per founder wallet; rosters cannot be edited after creation. Groups share the custom test mint but have separate vaults and accounting. **Get demo tokens** requires a wallet signature and provides a one-time top-up to 100 test tokens and 0.03 Devnet SOL, capped at 20 distinct wallet/mint grants per demo database. It is not an unlimited faucet. If a grant's confirmation is uncertain, inspect its stored receipt before retrying.
+
+To enable judge funding and automatic payouts, start the server from the repository root with its existing Devnet utility payer:
+
+```sh
+VOWPOOL_DEMO_PAYER_KEY_PATH="$PWD/.tools/keys/devnet-deployer.json" \
+  node apps/web/node_modules/next/dist/bin/next start apps/web
+```
+
+This path is server-only. The service signs test-token grants and permissionless refund delivery; members still sign group creation, commitments, acknowledgments, approvals and treasury withdrawals themselves. The server must stay running and its utility payer needs Devnet SOL. A 30-second background sweep retries recorded refunds even when the owner is offline. Outcome recording and payout remain separate transactions, so delivery failure preserves the entitlement. The detail page offers a manual refund retry.
+
+The real Devnet rehearsal created a separate two-wallet group, staked one token, recorded reviewer approval and observed the background service return it in 14 seconds without an owner payout action. Eight transaction receipts were independently confirmed, with owner balance restored and vault/liabilities zero. This uses disposable development wallets, not the supplied browser wallets. To run a fresh rehearsal against the running funded server:
+
+```sh
+bun scripts/rehearse-self-service.ts
+```
+
+Each fresh run consumes two demo grants and Devnet SOL. Public evidence is saved to `deployments/self-service-verification.json`; disposable private keys stay in memory. The supplied founder initialization, browser-wallet rehearsal and qualifying GitHub merge remain pending.
+
+## Prepare the shared test mint and initial group
 
 Provide 2–8 distinct **public member addresses**, the member founder, treasurer and fixed treasury recipient. Deployer and member roles must be distinct. Bootstrap creates one ordinary SPL mint with six decimals, gives each member 100 test tokens and 0.03 Devnet SOL for rent/fees, and prepares public configuration. The founder initializes the group with their browser wallet. The server never holds a member key.
 
@@ -67,7 +94,7 @@ bun scripts/bootstrap-devnet.ts PUBLIC_GROUP_CONFIG.json .tools/keys/devnet-depl
 bun run build
 ```
 
-The config schema is `packages/shared/src/group-setup.ts`. Use the verified official live forwarder/state for the actual group. Missing workflow identity can remain all-zero for a **peer-only group**; automated creation stays disabled. A frozen policy cannot be changed later. Enabling D requires a new group with an actual deployed workflow CID/name/owner and exercised receiver authentication. Simulator metadata cannot serve as that identity.
+The config schema is `packages/shared/src/group-setup.ts`. The current browser demo explicitly uses `developmentFixture: true`, the official mock forwarder and simulator metadata; this supports local CRE broadcast to Devnet without claiming live DON authentication. Its native policy preflight matched before bootstrap. Use `config.demo.json` with the existing `staging-settings` workflow target and update candidate addresses after commitments are created. A live group instead requires the verified live forwarder/state and actual deployed workflow CID/name/owner. Missing workflow identity can remain all-zero for a **peer-only group**; automated creation stays disabled. A frozen policy cannot be changed later. Simulator metadata cannot serve as a live identity.
 
 Bootstrap rejects mock/unrecognized forwarders unless `developmentFixture: true`, validates the Devnet genesis and forwarder state ownership, and rejects a second mint bootstrap once its public output records a mint. Keep public receipt files and recover a partially prepared setup instead of minting again.
 
@@ -82,7 +109,7 @@ If you are new to Solana, think of VowPool as using different account types for 
 | Member wallet | A public Solana address paired with a private signing key held by the member's wallet app, such as Phantom | Identifies a member and signs that member's transactions. Share the public address for the roster; never share the recovery phrase or private key. |
 | Wallet signature | A cryptographic approval made by the wallet | Proves that the member approved a transaction. The VowPool server does not sign member actions. |
 
-Connecting Phantom does not automatically add someone to the group. The member's public address must already be in the fixed roster configured before group initialization.
+Connecting Phantom lets a founder create their own group. Joining an existing group requires the member's public address to be in its roster, frozen by the founder at creation.
 
 ### Token definition and token balances
 
@@ -105,7 +132,7 @@ The member wallet signs transfers; it does not itself store SPL token balances. 
 
 For example, when a member stakes 5 test tokens, their wallet signs, 5 tokens move from their member ATA to the group vault, the commitment account changes to active, and the group account updates its accounting. The token program executes the transfer; the VowPool program checks that it is allowed.
 
-In short: **wallets identify and sign; token accounts hold balances; the token program moves tokens; VowPool's group and commitment accounts store the rules and records.** Solana also has shared system and token program accounts that are not created once per commitment.
+**Wallets identify and sign; token accounts hold balances; the token program moves tokens; VowPool's group and commitment accounts store the rules and records.** Solana also has shared system and token program accounts that are not created once per commitment.
 
 ## CRE verification
 

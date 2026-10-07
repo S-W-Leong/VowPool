@@ -1,0 +1,30 @@
+{
+  "verifiedAt": "2026-10-07T12:46:39.414Z",
+  "network": "solana-devnet",
+  "programId": "A2JT4HUJYEd3BL5xPXRiaXjvoFSMetY8zvLEPmRAxXPf",
+  "group": "5rTKq4ZmSdfVEmfu2T8MSNogueiearGSwSf57UzzYynZ",
+  "mint": "9WUvzkax9eHCrkVUHZREvmaBE9emyY1Ynt6MN47jvsfN",
+  "vault": "8dCmWjMZhAwaQ2Rc9Bn6tK7kYEpVp7pMVgVKgo13rNu8",
+  "groupInitialized": false,
+  "vaultCreated": false,
+  "bootstrapStage": "funded",
+  "confirmedReceiptCount": 3,
+  "balances": [
+    {
+      "address": "8H38RnKxpNj4YXEx72RiD8Eh6r9cCznN13JYwj3PC4jP",
+      "tokenAccount": "DLu6vFkviy4ZRGCt5tRYMEAC5tcZw3ApG3i9KCcMydKn",
+      "testTokens": "100",
+      "baseUnits": "100000000",
+      "lamports": 4929920066
+    },
+    {
+      "address": "8CGUAwmEFSPHTb1jUQw1TFuoSKXuewGd8fJF2gNiod3f",
+      "tokenAccount": "4dPhnTJCcsshbVZE2A2PdpYPLz43auZx4X9PV4zaDSsn",
+      "testTokens": "100",
+      "baseUnits": "100000000",
+      "lamports": 30000000
+    }
+  ],
+  "simulationPolicyPreflight": "CID/name/owner matched the native staging-settings simulation on 2026-10-07",
+  "liveDon": false
+}

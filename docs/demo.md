@@ -2,11 +2,28 @@
 
 As of 7 October 2026, the program and labeled development fixture are on Solana Devnet. This runbook separates exercised evidence from remaining acceptance work. The submission deadline is 23:59 Asia/Singapore on 7 October, as recorded in the implementation plan. Reserve the final hour for recording and submission.
 
+The user confirmed that local CRE simulation is acceptable; workflow deployment is not required. The browser demo uses custom SPL test tokens and the official mock forwarder for real Devnet broadcast. SW_Dev (`8H38RnKxpNj4YXEx72RiD8Eh6r9cCznN13JYwj3PC4jP`) is founder/owner; Demo - Tim (`8CGUAwmEFSPHTb1jUQw1TFuoSKXuewGd8fJF2gNiod3f`) is reviewer/treasurer/fixed treasury recipient. Both received 100 test tokens and 0.03 Devnet SOL. Prepared addresses and confirmed receipts are in `deployments/devnet.json`, with independent checks in `deployments/demo-bootstrap-verification.json`. Founder initialization remains unsigned. The app must use this new group, not the older fixture group.
+
+For the supplied wallets, connect SW_Dev and choose **Create your group**. Tim's address and treasury role are pre-filled; review them and sign creation. Judges can instead connect their own founder wallet and invite 1–7 public addresses. No manually generated group wallet is required. Each group has a separate vault and fixed roster. Copy the invitation link for listed members to open with their matching wallet.
+
+Start the server with `VOWPOOL_DEMO_PAYER_KEY_PATH` as described in README. New judge wallets can sign a funding message for a one-time top-up to 100 test tokens and 0.03 Devnet SOL, subject to the 20-wallet demo cap. Reviewers need Devnet SOL for acknowledgments and approvals but no token stake merely to review. Keep the funded server running for automatic refunds, including when the owner is offline. Manual recovery remains available in commitment details.
+
+For native CRE checks of this group, run from `cre/` (the override config path is relative to the workflow folder):
+
+```sh
+CRE_SOLANA_PRIVATE_KEY="$PWD/../.tools/keys/cre-transmitter.json" \
+  ../.tools/bin/cre workflow simulate workflows/accountability \
+  --target staging-settings --config ./config.demo.json \
+  --non-interactive --trigger-index 0
+```
+
+This exact non-broadcast command exercised the absent-group metadata preflight and matched the prepared CID/name/owner. After creating commitments, use Pool → Group rules & public accounts → Export CRE configuration, place the exported file at `cre/workflows/accountability/config.demo.json`, and keep the existing `staging-settings` target. Its group and candidate addresses match the selected group. Dry-run first, then add `--broadcast` for real Devnet writes. Outcome recording and refund release are separate transactions. The app service automatically releases a recorded D refund; without that service, another CRE invocation can release it. No live DON origin is claimed.
+
 ## Judge narrative (about 3 minutes)
 
 **0:00–0:25: The problem.** Small groups make ambitious promises but struggle to agree on proof and consequences. VowPool freezes the agreement before any test-token stake enters escrow. The group can see exactly who reviews, when approval is due and what happens if nobody approves.
 
-**0:25–1:15: Solana peer flow.** Connect owner wallet on Devnet. Show the fixed roster, test mint and confirmed balances. Create A with a clear goal, one non-owner verifier and short deadlines. Review frozen terms, sign creation and export the terms. Switch to the reviewer wallet and acknowledge the role. Switch back to the owner and fund. Save signed evidence. Reviewer approves. Show the recorded refund entitlement, then release the exact stake. Open the Devnet receipt and refresh the owner balance.
+**0:25–1:15: Solana peer flow.** Connect owner wallet on Devnet, create the group with the reviewer's address and copy the invitation link. Show the frozen roster, test mint and confirmed balances. Create A with a clear goal, one non-owner verifier and short deadlines. Review frozen terms, sign creation and export the terms. Switch to the reviewer wallet and acknowledge the role. Switch back to the owner and fund. Save signed evidence. Reviewer approves. Watch the automatic refund confirm without an owner payout signature. Open the Devnet refund receipt and check the owner's restored balance. In B, payout starts only after all appointed reviewers approve.
 
 **1:15–1:50: Shared consequences.** Show an unapproved A/C goal after the review cutoff. Any caller can settle expiry. Refresh the communal pool and show that withdrawals use only forfeited funds and the fixed treasury recipient. Mention B's unanimous approval and that the compiled-program tests exercise this rule.
 
@@ -16,16 +33,18 @@ As of 7 October 2026, the program and labeled development fixture are on Solana 
 
 ## Exercised evidence
 
+`deployments/self-service-verification.json` records a real Devnet rehearsal of a new group, signed wallet funding, cross-group terms storage, acknowledgment, a one-token stake, reviewer approval and automatic server payout without an owner refund action. All eight receipts confirmed; the stake returned in 14 seconds, vault and liabilities became zero, and a replay request did not double-pay. These are disposable development wallets; browser extension signing still requires rehearsal with the supplied wallets. This refund service is separate from CRE simulation and does not establish live DON execution.
+
 `deployments/devnet.json` contains the deployed program and upgrade authority. `deployments/staging-fixture.json` contains real owner/reviewer fixture transactions and three native CRE broadcast receipts. `deployments/staging-fixture-verification.json` records an independent confirmed-state check of all 13 receipts, exact owner refund and pool accounting.
 
 The fixture shows A acknowledgment, funding, approval and 1.25-token refund; an unapproved C goal settling into the pool; and GitHub failure for an actual public merge before activation. These transactions use fresh development wallets and the official mock forwarder. They are useful adapter evidence, with live DON origin unverified. Local compiled-program tests cover B unanimity, account substitution, unauthorized/self approval, replay, D timing/outages, 48-hour unresolved refunds and protected treasury balances.
 
 ## Remaining rehearsal inputs
 
-- Fixed public member roster, member founder, treasurer and treasury recipient. Actual member actions use browser wallet signatures. No member private key belongs in the server or chat.
+- Founder initialization and browser-wallet rehearsal for the prepared public roster. Actual member actions use browser wallet signatures. No member private key belongs in the server or chat.
 - Server `OPENAI_API_KEY` configured locally, followed by one actual provider request and explicit review. Manual configuration currently works.
 - Live CRE tenant approval and authoritative deployed CID/name/owner if presenting live automated authentication. Native simulation is the currently exercised integration.
-- A public PR that merges after activation and before the frozen goal deadline for a qualifying success demo, if live access becomes available.
+- A public PR that merges after activation and before the frozen goal deadline for a qualifying success demo through local CRE simulation broadcast.
 
 Do not relabel the existing pre-activation merge as a qualifying success. Do not shorten the onchain 48-hour unresolved policy for a recording. Show the exact controlled-clock local test for that boundary and identify it as local.
 

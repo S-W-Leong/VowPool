@@ -2,12 +2,12 @@ import {mkdirSync} from 'node:fs';
 import {dirname,resolve} from 'node:path';
 import {Connection} from '@solana/web3.js';
 import {MetadataStore} from './metadata-store';
-import {readCommitment,readGroup,groupAddress,rpcUrl} from './chain';
+import {readCommitment,readGroup,rpcUrl} from './chain';
 const connection=new Connection(rpcUrl,'confirmed');
 let instance:MetadataStore|undefined;
 export function store(){
  if(!instance){const file=resolve(process.env.VOWPOOL_DATABASE_PATH||'.data/vowpool.db');mkdirSync(dirname(file),{recursive:true});
- instance=new MetadataStore(file,async address=>{const c=await readCommitment(connection,address);if(!groupAddress||c.group!==groupAddress)throw new Error('Commitment is outside configured group');const group=await readGroup(connection,c.group);return {...c,tokenDecimals:group.decimals};});}
+ instance=new MetadataStore(file,async address=>{const c=await readCommitment(connection,address);const group=await readGroup(connection,c.group);return {...c,tokenDecimals:group.decimals};});}
  return instance;
 }
 export {connection};

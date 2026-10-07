@@ -1,0 +1,67 @@
+{
+  "network": "solana-devnet",
+  "developmentFixture": true,
+  "liveDon": false,
+  "browserWalletRehearsal": false,
+  "programId": "A2JT4HUJYEd3BL5xPXRiaXjvoFSMetY8zvLEPmRAxXPf",
+  "owner": "CEuFqKLCKhHUHrcYp4d4LFpuyh9q57XGss6q8dTcrSvb",
+  "reviewer": "757Eot5vc9eu63qf2LqTVBEmkSTQgscHtcSJuhAyFmFF",
+  "receipts": [
+    {
+      "action": "wallet-signed demo funding",
+      "signature": "3DytiosyazpfBWzrFp2uSQ7SHWQgyqP59YGh4TKLAjEa2vR9Fn2VF7jqrjie9rqDMKWjSQqphkQQS91cMh5P3avt"
+    },
+    {
+      "action": "wallet-signed demo funding",
+      "signature": "kbaYMnFbqXeoEmHztcS7bbYuY4HaSanvEPpBusspQ3AKvep4xy86MiJ8cgm8cfGbdWr7w1sd6jN7hoHjTCM9F6H"
+    },
+    {
+      "action": "founder signs group creation",
+      "signature": "FypMCc1qL4k8cEhTS1kocUvFcypCoXxVjCbjRnEficdoo3g8iMPxQ4w3kcdmfFv7c61EJFtjMMRpT924T3WaTKP"
+    },
+    {
+      "action": "create peer commitment",
+      "signature": "5D1krmHRFpnoZLBKEtGorRbszJt9wc5Z4wzJbRUs3CaeDM6YQH7furUr8VwaGSTc313QZLCH9tmf7jJLysMNZDJt"
+    },
+    {
+      "action": "reviewer acknowledges",
+      "signature": "3KUwCTMBDPw8s5Afnb5HpnzbAZGGdevrngWdUZvtBnYHagqXPihi6W26DcgdW28F5pPD8WZAfSoCCicTEKvouDFF"
+    },
+    {
+      "action": "owner locks 1 test token",
+      "signature": "3AX6jJC5rZMZV5otSWfufWaFLbK1KXQZSj8NG9GmtvMFFyMvDv6Yy82bgQQ9yYnoXjejdTk33iXFnzW93mJ6GDvG"
+    },
+    {
+      "action": "reviewer approves; owner makes no payout transaction",
+      "signature": "62BXHi4XR37b2F64BjwaiwYhVqujxoyMtsssHBpZKn9boqYYqoCm3QJQYB1z6bDzM22wAddWYp9jN3K2U3amzXsy"
+    },
+    {
+      "action": "automatic server-paid refund; no owner signature",
+      "signature": "4vo8tqfm1BDeLVLY2EaQ1bgpa24Pe4PEnRhQMAWfvjZerGUQmDgSJrvcsbqVkimy2rSzsbz9GgLXpHR5ZebU1VXT"
+    }
+  ],
+  "note": "Disposable scripted fixture. Exercises the actual HTTP services and deployed Devnet program. No real member keys are used.",
+  "group": "2XQpWfLrRy9RDdm7vw4CPQjnPefjW69b3mHCAXxLYTjo",
+  "mint": "9WUvzkax9eHCrkVUHZREvmaBE9emyY1Ynt6MN47jvsfN",
+  "commitment": "4niNtf6KdU2Cc5daB86wZxnewrc4syfGkEjYPdoLGTht",
+  "verifiedAt": "2026-10-07T13:07:13.488Z",
+  "confirmedReceiptCount": 8,
+  "refundObservedAfterSeconds": 14,
+  "checks": {
+    "invitedReviewerDiscovery": true,
+    "crossGroupTerms": true,
+    "scopedCandidates": true,
+    "unapprovedRefundRejected": true,
+    "automaticRefundWithoutOwnerAction": true,
+    "duplicateRefundSafe": true
+  },
+  "final": {
+    "status": "succeeded",
+    "refundReleased": true,
+    "ownerTestTokens": "100",
+    "vaultBaseUnits": "0",
+    "active": "0",
+    "refundable": "0",
+    "pool": "0"
+  }
+}
