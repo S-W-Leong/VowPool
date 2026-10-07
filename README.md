@@ -81,6 +81,14 @@ CRE_SOLANA_PRIVATE_KEY="$PWD/.tools/keys/cre-transmitter.json" \
 
 The local target performs a real public GitHub HTTP fetch and deterministic evaluation against sample timing. It constructs no report and sends no transaction. Staging reads real group/commitment accounts and exercises the official Devnet mock forwarder:
 
+The separate `rpc-check` target uses known public fixture addresses, with no candidate API dependency. It checks genesis, then batches Clock, forwarder state, group and commitments through confirmed `getMultipleAccounts`. It creates no report or transaction, even with `--broadcast`. Its real read evidence and independent chain-reader comparison are in `deployments/rpc-check.json`.
+
+```sh
+CRE_SOLANA_PRIVATE_KEY="$PWD/.tools/keys/cre-transmitter.json" \
+  .tools/bin/cre workflow simulate workflows/accountability --project-root cre \
+  --target rpc-check --non-interactive --trigger-index 0
+```
+
 ```sh
 # Set config.staging.json candidatesUrl to your running HTTPS /api/candidates endpoint.
 # Dry run first, then broadcast only to the explicitly labeled fixture.
@@ -93,6 +101,8 @@ CRE_SOLANA_PRIVATE_KEY="$PWD/.tools/keys/cre-transmitter.json" \
 ```
 
 Candidate hints never authorize an outcome. CRE rechecks program ownership, group/commitment PDAs, canonical configuration hashes and frozen policy. It fetches only the exact public PR endpoint, validates bounded response fields and evaluates identical consensus observations. Reports bind the account list and actual workflow metadata. The receiver independently checks the forwarder state/PDA and CID/name/owner. Workflow deadline decisions use the validated Solana Clock timestamp, bounded by runtime time, so a runtime clock ahead of Devnet cannot produce a future observation.
+
+The reader validates bounded account bytes/vector/string lengths before codec decoding and preserves integer fields as bigint. Identical consensus applies to validated account semantics; context slots use median aggregation for diagnostics, and unrelated lamports, rent, padding and group accounting are excluded. An invalid candidate is skipped while valid items continue. A cross-node semantic disagreement defers the whole bounded five-item batch; no outcome is authorized. Discovery currently examines at most 25 hints per cycle. RPC failures never classify a commitment as failed, and the handler does not retry in a tight loop. Actual multi-node DON behavior remains unexercised because tenant deployment is unavailable. `candidateAddresses` supports known-address hints when `candidatesUrl` is omitted or unavailable.
 
 Current tenant access reports deployment disabled. `config.production.json` intentionally remains incomplete. No live workflow, DON execution ID or qualifying post-activation merge/refund has been demonstrated. The public GitHub fixture captures PR1652, merged before our commitment activation, for an honest non-qualifying case. See `docs/integration-check.md` and `docs/demo.md`.
 

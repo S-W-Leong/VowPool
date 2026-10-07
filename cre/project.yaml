@@ -3,6 +3,10 @@ local-simulation:
   rpcs:
     - chain-name: solana-devnet
       url: https://api.devnet.solana.com
+rpc-check:
+  rpcs:
+    - chain-name: solana-devnet
+      url: https://api.devnet.solana.com
 staging-settings:
   rpcs:
     - chain-name: solana-devnet

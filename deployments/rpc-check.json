@@ -1,0 +1,34 @@
+{
+  "read": "confirmed-devnet-rpc",
+  "slot": 508425389,
+  "group": "AhREiJSgTc4cMM2KL5VKzXVZB9fE6Hdfpu3poVu2Pb5T",
+  "candidates": [
+    {
+      "address": "EGhssuwcSny2qkgW5wE8tLSLW1kjD5afou75sxxGL54o",
+      "nonce": "3",
+      "amount": "1000000",
+      "status": 3,
+      "goalDeadline": "1791366098",
+      "reviewDeadline": "1791366128",
+      "configHash": "ad13635f9749be1cb31f1e59bf18b9a95118460a163f9c4d3c36ee7729569296"
+    },
+    {
+      "address": "3wJrcVre531zA5KkRGKCe7AjZrfzcoo96eokUVwWuZAx",
+      "nonce": "4",
+      "amount": "1250000",
+      "status": 2,
+      "goalDeadline": "1791366093",
+      "reviewDeadline": "1791366123",
+      "configHash": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ],
+  "network": "solana-devnet",
+  "runtime": "native CRE CLI 1.37.0 local simulation",
+  "readOnly": true,
+  "reportCreated": false,
+  "write": false,
+  "binarySha256": "cf035f8eac2e5924ba458d0294f89ff8ef1886502073018eb9f4c1a1bd8f66fb",
+  "configSha256": "539ff440c91349b7f20f5a172509aaa378855adb1784af4dc3b34f8b6d2201b0",
+  "independentChainReaderMatch": true,
+  "note": "Development fixture with mock-forwarder policy. This proves a real RPC read in native local simulation, not live DON consensus or settlement."
+}

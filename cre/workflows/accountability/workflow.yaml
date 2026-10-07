@@ -6,6 +6,14 @@ local-simulation:
     workflow-path: ./main.ts
     config-path: ./config.local-simulation.json
     secrets-path: ""
+rpc-check:
+  user-workflow:
+    workflow-name: vowpool-rpc-check
+    deployment-registry: private
+  workflow-artifacts:
+    workflow-path: ./main.ts
+    config-path: ./config.rpc-check.json
+    secrets-path: ""
 staging-settings:
   user-workflow:
     workflow-name: vowpool-staging
