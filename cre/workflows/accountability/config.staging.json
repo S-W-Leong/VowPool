@@ -7,5 +7,10 @@
   "group": "AhREiJSgTc4cMM2KL5VKzXVZB9fE6Hdfpu3poVu2Pb5T",
   "forwarderProgramId": "7kuEAA3mSC1Tz8gQjnvH7bKFda9xSPRRin9SZbH49cNK",
   "forwarderState": "5Tipz3yhTBdVsDbaBxZkrp7Gjf3brGq5SKkxReefPMP7",
-  "candidatesUrl": "https://thought-bee-sally-palestinian.trycloudflare.com/api/candidates"
+  "candidateAddresses": [
+    "3zjocxeewyFY7BhWjEQnDovLhqjK68FZYjGCCSgghwF2",
+    "EGhssuwcSny2qkgW5wE8tLSLW1kjD5afou75sxxGL54o",
+    "3wJrcVre531zA5KkRGKCe7AjZrfzcoo96eokUVwWuZAx",
+    "8zZrYy1vxKoyvVjj1dJSTUwySmXVzAmWVY1L9UP1SxnQ"
+  ]
 }

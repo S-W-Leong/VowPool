@@ -1,0 +1,152 @@
+{
+  "network": "solana-devnet",
+  "developmentFixture": true,
+  "liveDon": false,
+  "group": "AhREiJSgTc4cMM2KL5VKzXVZB9fE6Hdfpu3poVu2Pb5T",
+  "address": "3zjocxeewyFY7BhWjEQnDovLhqjK68FZYjGCCSgghwF2",
+  "nonce": "5",
+  "terms": {
+    "owner": "5fPZoMdGZyV6QeJ1M3yLtEUGUNhoZpVnbu64LSPuZM3w",
+    "goal": "DEVELOPMENT CHECKPOINT: real RPC and GitHub observation",
+    "criteria": "PR1652 merged before activation; it must remain pending before the deadline and fail afterward.",
+    "stake": "0",
+    "tokenDecimals": 6,
+    "goalDeadline": 1791371403,
+    "reviewDeadline": 1791371433,
+    "mode": "github",
+    "reviewers": [],
+    "github": {
+      "owner": "smartcontractkit",
+      "repo": "chainlink-solana",
+      "pr": 1652,
+      "targetBranch": "develop",
+      "policyVersion": 1
+    }
+  },
+  "fixtureReceipts": [
+    {
+      "action": "create zero-stake D checkpoint",
+      "signature": "AetAiBo6STqYVKLrdsPcoVGfCBgSpbG1oMpJm7X1YG6y7uWfAajz8Z32wQM3B71nGYRxMxSyGNYoELfYJTnu1zp"
+    },
+    {
+      "action": "activate zero-stake D checkpoint",
+      "signature": "5ZhcEY4HNhqeRGvhkcM9R8tFcUZzVBdN6J8GYAMFWmQWEoSGuUR5BnU8gtrcHrce3k1xVTm9pjBNGPiPtGfb76B4"
+    }
+  ],
+  "note": "Zero-stake checkpoint of the current native CRE workflow. Official mock forwarder only. No qualifying merge or token transfer is demonstrated.",
+  "confirmedBefore": {
+    "status": "active",
+    "amount": "0",
+    "activatedAt": 1791371316,
+    "goalDeadline": 1791371403,
+    "reviewDeadline": 1791371433,
+    "hardDeadline": 1791544233,
+    "configHash": "5cdaa9f0ac19286a25ed2f4d479307e0eaeb7a3b55e168a50540232c5333ff31"
+  },
+  "independentGithubObservation": {
+    "url": "https://api.github.com/repos/smartcontractkit/chainlink-solana/pulls/1652",
+    "fetchedAt": "2026-10-07T11:09:41.560Z",
+    "status": 200,
+    "number": 1652,
+    "merged": true,
+    "mergedAt": "2026-10-05T21:42:48Z",
+    "targetBranch": "develop",
+    "owner": "smartcontractkit",
+    "repo": "chainlink-solana"
+  },
+  "fixtureRentTopUp": {
+    "sol": "0.01",
+    "signature": "5q566QDvejkWWiL8P7nfV2po1uSnC6ycer3QTDtLHRpWSHC5dHzEFBjTCuhXPnvBZpttpNidvsLGhhrS9FKv4VaF"
+  },
+  "pendingSimulation": {
+    "rpcSlot": 508434713,
+    "observedAt": 1791371342,
+    "result": "PENDING",
+    "write": false
+  },
+  "binarySha256": "cf035f8eac2e5924ba458d0294f89ff8ef1886502073018eb9f4c1a1bd8f66fb",
+  "configSha256": "63c8fd2a95f510b779290a7954c7a415f784e29dc99f22a203297ee07d71acd2",
+  "dryRun": {
+    "rpcSlot": 508435024,
+    "mode": "staging",
+    "observedAt": 1791371416,
+    "results": [
+      {
+        "address": "3zjocxeewyFY7BhWjEQnDovLhqjK68FZYjGCCSgghwF2",
+        "operation": 1,
+        "result": "FAIL",
+        "txStatus": 2,
+        "receiverStatus": 0,
+        "signature": null,
+        "dryRun": true
+      },
+      {
+        "address": "EGhssuwcSny2qkgW5wE8tLSLW1kjD5afou75sxxGL54o",
+        "result": "UNKNOWN",
+        "write": false
+      },
+      {
+        "address": "3wJrcVre531zA5KkRGKCe7AjZrfzcoo96eokUVwWuZAx",
+        "result": "UNKNOWN",
+        "write": false
+      },
+      {
+        "address": "8zZrYy1vxKoyvVjj1dJSTUwySmXVzAmWVY1L9UP1SxnQ",
+        "result": "UNKNOWN",
+        "write": false
+      }
+    ]
+  },
+  "broadcast": {
+    "rpcSlot": 508435095,
+    "mode": "staging",
+    "observedAt": 1791371434,
+    "results": [
+      {
+        "address": "3zjocxeewyFY7BhWjEQnDovLhqjK68FZYjGCCSgghwF2",
+        "operation": 1,
+        "result": "FAIL",
+        "txStatus": 2,
+        "receiverStatus": 0,
+        "signature": "TM1BDgjjecXBDxdnq3EPtmzsHEHZVApnHvzuBahY5MaVYA4hdgxBCJbmJg3q6PEC9ZGpvskC4DaV8NCvn3Js633",
+        "dryRun": false
+      },
+      {
+        "address": "EGhssuwcSny2qkgW5wE8tLSLW1kjD5afou75sxxGL54o",
+        "result": "UNKNOWN",
+        "write": false
+      },
+      {
+        "address": "3wJrcVre531zA5KkRGKCe7AjZrfzcoo96eokUVwWuZAx",
+        "result": "UNKNOWN",
+        "write": false
+      },
+      {
+        "address": "8zZrYy1vxKoyvVjj1dJSTUwySmXVzAmWVY1L9UP1SxnQ",
+        "result": "UNKNOWN",
+        "write": false
+      }
+    ]
+  },
+  "independentVerification": {
+    "verifiedAt": "2026-10-07T11:11:54.448Z",
+    "transactionSlot": 508435112,
+    "receiptCount": 4,
+    "error": null,
+    "forwarderAndReceiverInvoked": true,
+    "status": "failed",
+    "amount": "0",
+    "observedAt": 1791371434,
+    "mergedAt": 1791236568,
+    "configurationHash": "5cdaa9f0ac19286a25ed2f4d479307e0eaeb7a3b55e168a50540232c5333ff31",
+    "termsHash": "0f3d507b8b91aa38fa97935cb2c7fa87c1216caa24213adf41b33a45ceb5b68e",
+    "group": {
+      "active": "0",
+      "refundable": "0",
+      "pool": "2000000"
+    },
+    "balanceSlot": 508435425,
+    "deployerLamports": 2743760360,
+    "transmitterLamports": 99980000
+  }
+}
