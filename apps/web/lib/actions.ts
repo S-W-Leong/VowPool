@@ -1,10 +1,20 @@
 import {BN} from '@coral-xyz/anchor';
+import {Buffer} from 'buffer';
 import {Connection,PublicKey,Transaction} from '@solana/web3.js';
 import {getAssociatedTokenAddressSync} from '@solana/spl-token';
 import {programFor,commitmentPda,type GroupView,type CommitmentView} from './chain';
 import {hashTerms} from '../../../packages/shared/src/terms';
 import {draftSchema,modes,type CommitmentDraft} from '../../../packages/shared/src/schema';
 import {parseTokenAmount} from '../../../packages/shared/src/amount';
+import {validateGroupSetup} from '../../../packages/shared/src/group-setup';
+export async function initializeGroupAction(connection:Connection,input:unknown,wallet:string){
+ const setup=validateGroupSetup(input);if(wallet!==setup.founder)throw new Error('Only the fixed member founder can initialize this group');
+ const founder=new PublicKey(setup.founder),mint=new PublicKey(setup.mint),p=programFor(connection);
+ const group=PublicKey.findProgramAddressSync([Buffer.from('group'),founder.toBuffer()],p.programId)[0];
+ const policy={...setup.policy,forwarder:new PublicKey(setup.policy.forwarder),forwarderState:new PublicKey(setup.policy.forwarderState)};
+ const ix=await p.methods.initializeGroup({roster:setup.roster.map(s=>new PublicKey(s)),treasurer:new PublicKey(setup.treasurer),treasuryRecipient:new PublicKey(setup.treasuryRecipient),policy}).accounts({founder,group,mint,vault:getAssociatedTokenAddressSync(mint,group,true)}).instruction();
+ return new Transaction().add(ix);
+}
 export async function createAction(connection:Connection,group:GroupView,input:CommitmentDraft,nonce:bigint){
  const draft=draftSchema.parse(input);if(!group.roster.includes(draft.owner)||draft.reviewers.some(r=>!group.roster.includes(r)))throw new Error('Owner and reviewers must be group members');
  if(draft.tokenDecimals!==group.decimals)throw new Error('Mint decimals changed');if(draft.mode==='github'&&!group.automatedReady)throw new Error('The group has no authorized CRE policy yet');

@@ -31,5 +31,21 @@ export async function requestAiDraft(input:unknown,options:{key?:string;model:st
  const json=JSON.parse(body);if(json.status!=='completed')throw new Error('AI draft incomplete. Retry or use manual entry.');
  const content=(json.output??[]).flatMap((x:{content?:unknown[]})=>x.content??[]) as Array<{type:string;text?:string}>;
  const text=content.filter(c=>c.type==='output_text').map(c=>c.text??'').join('');if(!text)throw new Error('AI returned no draft. Manual entry remains available.');
- return validateAiDraft(JSON.parse(text),request.mode);
+ const result=validateAiDraft(JSON.parse(text),request.mode);
+ // A valid schema is insufficient evidence that identifiers came from the user.
+ if(request.mode==='github'){
+  const source=request.goal;
+  const references=Array.from(source.matchAll(/\b([A-Za-z0-9-]+)\/([A-Za-z0-9._-]+)(?:\/pull\/(\d+))?/g));
+  const ownerLabel=source.match(/\bowner\s*[:=]?\s*([A-Za-z0-9-]+)/i)?.[1];
+  const repoLabel=source.match(/\b(?:repo|repository)\s*[:=]?\s*([A-Za-z0-9._-]+)/i)?.[1];
+  const owner=result.draft.owner,repo=result.draft.repo;
+  const matching=references.find(r=>r[1].toLowerCase()===owner?.toLowerCase()&&r[2].toLowerCase()===repo?.toLowerCase());
+  if(!matching&&!(ownerLabel?.toLowerCase()===owner?.toLowerCase()&&repoLabel?.toLowerCase()===repo?.toLowerCase()&&owner&&repo)){
+   result.draft.owner=null;result.draft.repo=null;result.draft.pr=null;
+  }else{
+   const suppliedPr=matching?.[3]??source.match(/(?:\b(?:PR|pull request)\s*#?\s*|#)(\d+)\b/i)?.[1];
+   if(!suppliedPr||Number(suppliedPr)!==result.draft.pr)result.draft.pr=null;
+  }
+ }
+ return validateAiDraft(result,request.mode);
 }
