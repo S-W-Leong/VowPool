@@ -117,3 +117,9 @@ Unsupported/unreadable commitment records do not suppress healthy records or can
 A/B/C require recorded approval by the review cutoff. D accepts only the exact PR/branch with `activated_at < merged_at <= goal_deadline`. API errors are UNKNOWN. Inconclusive verification more than 48 hours after review becomes a distinct unresolved refund. Outcome and payout are separate; failed token delivery leaves a retryable entitlement. Permissionless peer expiry, recorded refund and D unresolved resolution work from the detail page. Pool withdrawal uses only recorded forfeitures and the fixed treasury recipient, protecting active escrow and unpaid refunds. Donations do not create spendable pool credit.
 
 AI drafts schema-validated configuration for explicit user review. It cannot generate executable workflows, approve completion or move funds. Repository/PR identifiers absent from the user’s input are cleared and requested. Rate/size bounds protect the server routes. Mainnet and real funds are outside this demo.
+
+## UI design
+
+The approved minimal Pact Club design uses ivory, forest green, editorial type and a ripple mark. One navigation row leads to Commitments, Reviews and Pool; full terms and reviewer records live in the focused detail view.
+
+See [the product spec](docs/2026-10-07-accountability-mvp-design.md), [design QA](design-qa.md), and [implementation notes](docs/pact-club-design.md). Screenshots of populated lists use explicitly labeled development fixtures. The temporary fixture route is removed from the production app. UI screenshots do not establish new Devnet transaction evidence or a deployed CRE workflow.

@@ -1,0 +1,19 @@
+'use client';
+// Temporary browser QA harness. Removed after verification; never onchain state.
+import {useState} from 'react';
+import {ConnectionProvider,WalletProvider} from '@solana/wallet-adapter-react';
+import {PublicKey} from '@solana/web3.js';
+import {PactHeader,BalanceSummary,CommitmentList,PactFooter,type Section} from '../pact-ui';
+import CreateForm from '../create-form';
+import Detail from '../detail';
+import type {CommitmentView,GroupView} from '../../lib/chain';
+const owner=new PublicKey(new Uint8Array(32).fill(1)).toBase58(),reviewer=new PublicKey(new Uint8Array(32).fill(2)).toBase58();
+const now=Math.floor(Date.now()/1000);
+const group={address:owner,founder:owner,roster:[owner,reviewer],treasurer:owner,treasuryRecipient:reviewer,mint:owner,vault:reviewer,active:80_000_000n,refundable:20_000_000n,pool:240_000_000n,decimals:6,automatedReady:true} as GroupView;
+const commitment={address:reviewer,group:owner,owner,nonce:1n,termsHash:'fixture',amount:20_000_000n,mode:'single',reviewers:[reviewer],goalDeadline:now+86400,reviewDeadline:now+172800,hardDeadline:now+345600,activatedAt:now,acknowledgments:1,approvals:1,status:'succeeded',refundReleased:false,configHash:'fixture',observedAt:0,mergedAt:0} as CommitmentView;
+const rows=[{id:'landing',goal:'Ship the landing page',summary:'40 test tokens · Review by 10 Oct',status:'Awaiting review',tone:'pending' as const},{id:'github',goal:'Merge login PR into main',summary:'40 test tokens · Due 10 Oct',status:'Verification pending',tone:'neutral' as const},{id:'refund',goal:'Finish the interview notes',summary:'20 test tokens · Approved',status:'',tone:'success' as const,action:'Release refund'}];
+function Harness(){const [section,setSection]=useState<Section>('commitments'),[view,setView]=useState('list'),[message,setMessage]=useState('');
+ function navigate(s:Section){setSection(s);setView('list');}
+ return <main className="shell"><PactHeader section={section} onNavigate={navigate} reviewCount={2} wallet={<button className="quiet">SW</button>}/>{view==='list'?<><section className="hero"><div><p className="eyebrow">YOUR ACCOUNTABILITY CIRCLE</p><h1>{section==='reviews'?'A little follow-through.':section==='pool'?'Our shared pool.':'Keep your word.'}</h1></div>{section==='commitments'?<button onClick={()=>setView('create')}>+ Make a commitment</button>:null}</section>{section==='commitments'?<BalanceSummary active="80" refundable="20" pool="240" onPool={()=>navigate('pool')} onRefunds={()=>setMessage('Illustrative refund list')}/>:null}<section className="commitments"><div className="list-tools"><span/><button className="text-button refresh" onClick={()=>setMessage('Illustrative data refreshed')}>Refresh</button></div>{section==='pool'?<div className="pool-view"><h2>240 test tokens</h2><p>Available to the group.</p></div>:<CommitmentList rows={section==='reviews'?[{id:'invite',goal:'Publish the demo walkthrough',summary:'Mei · 10 test tokens',status:'Reviewer invitation',tone:'neutral',action:'Accept reviewer role'},{id:'evidence',goal:'Complete onboarding flow',summary:'Amir · 20 test tokens',status:'Awaiting review',tone:'pending',action:'Review evidence'}]:rows} onOpen={()=>setView('detail')}/>}</section></>:view==='create'?<CreateForm group={group} owner={owner} busy={false} onClose={()=>setView('list')} onCreate={async()=>setMessage('Fixture only — no transaction submitted')}/>:<Detail commitment={commitment} group={group} walletAddress={owner} busy={false} now={now} onClose={()=>setView('list')} onAction={async()=>setMessage('Fixture only — no transaction submitted')}/>}<p role="status" className="muted">{message}</p><PactFooter/><small className="muted">QA fixture · illustrative data · no transactions</small></main>;
+}
+export default function Page(){return <ConnectionProvider endpoint="https://api.devnet.solana.com"><WalletProvider wallets={[]}><Harness/></WalletProvider></ConnectionProvider>;}
