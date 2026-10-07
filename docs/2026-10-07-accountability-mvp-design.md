@@ -221,6 +221,8 @@ Each list row shows the goal, stake, one relevant deadline/status and a next act
 
 Start with natural-language goal input and an explicit A/B/C/D picker. “Help configure” calls the AI drafting endpoint. Show suggested fields and missing-information prompts, retain manual editing, and never auto-stake from model output.
 
+Approved optional-AI UX update, 7 October 2026: manual entry is the main creation path. Keep “Draft with AI · Optional” collapsed by default, with explicit skip guidance when expanded, a compact textarea, a secondary “Generate draft” action and examples matching the selected peer/GitHub mode. Mark required fields with * and label optional inputs explicitly. AI only suggests terms; users review them before creating a commitment. “Review commitment” remains the primary form action.
+
 Fields: goal, success criteria, monetary stake, optional physical consequence, goal deadline, review deadline, approval mode and selected verifiers where applicable. Show dates in Asia/Singapore and store timestamps consistently. Validate review deadline is later than goal deadline, creator cannot review themselves, and selected verifiers are eligible.
 
 D adds repository, PR number, exact target branch, fixed template/version and displayed 48-hour grace policy; hide human-verifier selection.
