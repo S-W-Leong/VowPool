@@ -1,0 +1,61 @@
+{
+  "verifiedAt": "2026-10-07T09:46:23.269Z",
+  "network": "solana-devnet",
+  "developmentFixture": true,
+  "programId": "A2JT4HUJYEd3BL5xPXRiaXjvoFSMetY8zvLEPmRAxXPf",
+  "group": "AhREiJSgTc4cMM2KL5VKzXVZB9fE6Hdfpu3poVu2Pb5T",
+  "mint": "CF6ycqXneqcyfMj5kPmKTAcuSSSmnR61ziNdDyVwhAXx",
+  "vault": "Di4ZGtdsnQrHE2mXDD5D8TVxBbkBEuaVGqAMniELbKEA",
+  "accounting": {
+    "active": "0",
+    "refundable": "0",
+    "pool": "2000000",
+    "vaultBaseUnits": "2000000"
+  },
+  "balances": [
+    {
+      "member": "5fPZoMdGZyV6QeJ1M3yLtEUGUNhoZpVnbu64LSPuZM3w",
+      "baseUnits": "98000000"
+    },
+    {
+      "member": "CfRgFXstBRA3e2sLoDodGDb5hN7vR9ZF7UvJ1hSjtvBd",
+      "baseUnits": "100000000"
+    }
+  ],
+  "commitments": [
+    {
+      "address": "EGhssuwcSny2qkgW5wE8tLSLW1kjD5afou75sxxGL54o",
+      "mode": "github",
+      "status": "failed",
+      "amount": "1000000",
+      "refundReleased": false,
+      "nonce": "3"
+    },
+    {
+      "address": "8zZrYy1vxKoyvVjj1dJSTUwySmXVzAmWVY1L9UP1SxnQ",
+      "mode": "group",
+      "status": "failed",
+      "amount": "1000000",
+      "refundReleased": false,
+      "nonce": "2"
+    },
+    {
+      "address": "3wJrcVre531zA5KkRGKCe7AjZrfzcoo96eokUVwWuZAx",
+      "mode": "single",
+      "status": "succeeded",
+      "amount": "1250000",
+      "refundReleased": true,
+      "nonce": "4"
+    },
+    {
+      "address": "61G6yXSjPvAw86g3iPnyaV2cuytZzEJGrRrEBVeivTxD",
+      "mode": "single",
+      "status": "draft",
+      "amount": "1250000",
+      "refundReleased": false,
+      "nonce": "1"
+    }
+  ],
+  "confirmedReceiptCount": 13,
+  "warning": "Fresh development wallets and official mock forwarder. No live DON origin or qualifying post-activation merge demonstrated."
+}

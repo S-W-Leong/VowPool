@@ -1,0 +1,284 @@
+{
+  "network": "solana-devnet",
+  "genesisHash": "EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG",
+  "programId": "A2JT4HUJYEd3BL5xPXRiaXjvoFSMetY8zvLEPmRAxXPf",
+  "upgradeAuthority": "4SrzkRNsAcKdeN7k7TNUvUzAdZWwg8dgckpJ2tmBZ3DB",
+  "group": "AhREiJSgTc4cMM2KL5VKzXVZB9fE6Hdfpu3poVu2Pb5T",
+  "mint": "CF6ycqXneqcyfMj5kPmKTAcuSSSmnR61ziNdDyVwhAXx",
+  "vault": "Di4ZGtdsnQrHE2mXDD5D8TVxBbkBEuaVGqAMniELbKEA",
+  "groupInitialized": true,
+  "groupSetup": {
+    "developmentFixture": true,
+    "roster": [
+      "5fPZoMdGZyV6QeJ1M3yLtEUGUNhoZpVnbu64LSPuZM3w",
+      "CfRgFXstBRA3e2sLoDodGDb5hN7vR9ZF7UvJ1hSjtvBd"
+    ],
+    "founder": "5fPZoMdGZyV6QeJ1M3yLtEUGUNhoZpVnbu64LSPuZM3w",
+    "treasurer": "CfRgFXstBRA3e2sLoDodGDb5hN7vR9ZF7UvJ1hSjtvBd",
+    "treasuryRecipient": "CfRgFXstBRA3e2sLoDodGDb5hN7vR9ZF7UvJ1hSjtvBd",
+    "policy": {
+      "forwarder": "7kuEAA3mSC1Tz8gQjnvH7bKFda9xSPRRin9SZbH49cNK",
+      "forwarderState": "5Tipz3yhTBdVsDbaBxZkrp7Gjf3brGq5SKkxReefPMP7",
+      "workflowCid": [
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17,
+        17
+      ],
+      "workflowName": [
+        48,
+        50,
+        97,
+        99,
+        56,
+        48,
+        100,
+        55,
+        98,
+        53
+      ],
+      "workflowOwner": [
+        170,
+        170,
+        170,
+        170,
+        170,
+        170,
+        170,
+        170,
+        170,
+        170,
+        170,
+        170,
+        170,
+        170,
+        170,
+        170,
+        170,
+        170,
+        170,
+        170
+      ]
+    },
+    "mint": "CF6ycqXneqcyfMj5kPmKTAcuSSSmnR61ziNdDyVwhAXx"
+  },
+  "bootstrapSignatures": [
+    "57cyuTeV2SMN9nhzmVVCBbjz2BDRG1WkYasbK53a1afxFU86fFWpnwVa7nBrdHLfLduorrE4WCEyqTF2tSMjCNVi",
+    "2226GRG4UhhMKkchAShb6PTCYWfuXyegfVpreUGJSiNTKE51rJQGAhfEXoSuthniP7tSrM1uYcHe8UbZtSYe3isw",
+    "4h8wCox8LAmWzuHxR7BUm3KJCS4iqQRqzc8MkSuk8FktZThDjnkhuri6S3M5nKbYQYqrwqUz2a7JmrJ9i3DeRx8k"
+  ],
+  "note": "DEVELOPMENT FIXTURE ONLY: official public mock forwarder, fresh disposable fixture wallets. Native CRE broadcast performs real Devnet writes; this does not establish DON authentication. Live deployment access unavailable.",
+  "fixtureTerms": [
+    {
+      "address": "61G6yXSjPvAw86g3iPnyaV2cuytZzEJGrRrEBVeivTxD",
+      "terms": {
+        "owner": "5fPZoMdGZyV6QeJ1M3yLtEUGUNhoZpVnbu64LSPuZM3w",
+        "goal": "DEVELOPMENT FIXTURE single",
+        "criteria": "Development-only peer lifecycle test.",
+        "stake": "1.25",
+        "tokenDecimals": 6,
+        "goalDeadline": 1791365856,
+        "reviewDeadline": 1791365886,
+        "mode": "single",
+        "reviewers": [
+          "CfRgFXstBRA3e2sLoDodGDb5hN7vR9ZF7UvJ1hSjtvBd"
+        ]
+      }
+    },
+    {
+      "address": "3wJrcVre531zA5KkRGKCe7AjZrfzcoo96eokUVwWuZAx",
+      "terms": {
+        "owner": "5fPZoMdGZyV6QeJ1M3yLtEUGUNhoZpVnbu64LSPuZM3w",
+        "goal": "DEVELOPMENT FIXTURE single",
+        "criteria": "Development-only peer lifecycle test.",
+        "stake": "1.25",
+        "tokenDecimals": 6,
+        "goalDeadline": 1791366093,
+        "reviewDeadline": 1791366123,
+        "mode": "single",
+        "reviewers": [
+          "CfRgFXstBRA3e2sLoDodGDb5hN7vR9ZF7UvJ1hSjtvBd"
+        ]
+      }
+    },
+    {
+      "address": "8zZrYy1vxKoyvVjj1dJSTUwySmXVzAmWVY1L9UP1SxnQ",
+      "terms": {
+        "owner": "5fPZoMdGZyV6QeJ1M3yLtEUGUNhoZpVnbu64LSPuZM3w",
+        "goal": "DEVELOPMENT FIXTURE group",
+        "criteria": "Development-only peer lifecycle test.",
+        "stake": "1",
+        "tokenDecimals": 6,
+        "goalDeadline": 1791366096,
+        "reviewDeadline": 1791366126,
+        "mode": "group",
+        "reviewers": []
+      }
+    },
+    {
+      "address": "EGhssuwcSny2qkgW5wE8tLSLW1kjD5afou75sxxGL54o",
+      "terms": {
+        "owner": "5fPZoMdGZyV6QeJ1M3yLtEUGUNhoZpVnbu64LSPuZM3w",
+        "goal": "DEVELOPMENT FIXTURE github",
+        "criteria": "Public PR1652 was merged before activation, so this is a non-qualifying test.",
+        "stake": "1",
+        "tokenDecimals": 6,
+        "goalDeadline": 1791366098,
+        "reviewDeadline": 1791366128,
+        "mode": "github",
+        "reviewers": [],
+        "github": {
+          "owner": "smartcontractkit",
+          "repo": "chainlink-solana",
+          "pr": 1652,
+          "targetBranch": "develop",
+          "policyVersion": 1
+        }
+      }
+    }
+  ],
+  "fixtureReceipts": [
+    {
+      "action": "fixture initialize group",
+      "signature": "34ZKjF9Zztv6BY2N1yfwfj5u7zNHpoKVapGjhTetNrRiumnbrQGfHxKvGkqo5Pwdkam6rQMM6NiN6Xz2ueAHkHvh"
+    },
+    {
+      "action": "fixture create single",
+      "signature": "5B5DG4BQcDgzjKcQUTKGn8FmkugfrAdHBXySzqJGMSnWX4emh8AM3mNEo9Bri6Df5pYmDrpRqAgchQWco2hfWNT3"
+    },
+    {
+      "action": "fixture create single",
+      "signature": "4vHrZHwiQV64yq4Usyy9Mu9B1wsDB2biKJa1S3SdZAtX8yRaNeKpndUwSpTmhGrGiFnKXmQkLTqXhqNTkoAK1Nnb"
+    },
+    {
+      "action": "fixture acknowledge",
+      "signature": "5mP8Q8y3HnGrM6g8FkE9WNVxdZxNC9JMJeuhfPVzVXJFgovhYHUCWcAiiDPj8m6M3k3Ki3Hyz5hDGP7xTJCxdUqn"
+    },
+    {
+      "action": "fixture activate single",
+      "signature": "2ZGg6B5PpPTwJLuVTURKKSY7mST4G81scTAqeNbiygNkEwHPUSQT2iXLuEEJoGY24uKE1iAqTWyaYvgjcVfZPznc"
+    },
+    {
+      "action": "fixture approve; refund left for CRE",
+      "signature": "Tn6nHu6fuK69KEvHYbP2RpRoJbeiXyjidXsi68YrseGpWLWMrpjHyfsu4yL3SH2itUm1JJetPDzcPS21Ac9VVqq"
+    },
+    {
+      "action": "fixture create group",
+      "signature": "5sgJ83Kd2jg7d81eNFKoen9w3AvAcbca34hUbNW2DDU73B51DGCoEpHxojJfWaY9gj2xfF79dkZ7nCL143HVEQ9r"
+    },
+    {
+      "action": "fixture activate group",
+      "signature": "5GQciUTRjcfmm4eGv41VEY6dH8HN4AXM6kH3CFgwqDEXWj3KvnWkkfWYN4Pfujn8Pe54ZSheWXfRKmNq9KFDPEbE"
+    },
+    {
+      "action": "fixture create github",
+      "signature": "41JR4CKqGmaJ8qbFGeLWGS9cYatLYJiuodnYhWuJUtrb1s1aZVmHBUzDLCe7F1bSX7RBLcSQ8dv5C5XK6eyc5xWg"
+    },
+    {
+      "action": "fixture activate github",
+      "signature": "2iwk6qwkoa1WTWZHKE5KjCEXVAh5CygRmgnUA2yBc5Q98a5V3FRWhRvH5UsufuiHmYMtRvYppzuvsMCLfe4t8zMM"
+    }
+  ],
+  "confirmedState": {
+    "group": {
+      "active": "2000000",
+      "refundable": "1250000",
+      "pool": "0"
+    },
+    "commitments": [
+      {
+        "address": "EGhssuwcSny2qkgW5wE8tLSLW1kjD5afou75sxxGL54o",
+        "mode": "github",
+        "status": "active",
+        "refundReleased": false,
+        "activatedAt": 1791365979,
+        "goalDeadline": 1791366098,
+        "reviewDeadline": 1791366128
+      },
+      {
+        "address": "8zZrYy1vxKoyvVjj1dJSTUwySmXVzAmWVY1L9UP1SxnQ",
+        "mode": "group",
+        "status": "active",
+        "refundReleased": false,
+        "activatedAt": 1791365977,
+        "goalDeadline": 1791366096,
+        "reviewDeadline": 1791366126
+      },
+      {
+        "address": "3wJrcVre531zA5KkRGKCe7AjZrfzcoo96eokUVwWuZAx",
+        "mode": "single",
+        "status": "succeeded",
+        "refundReleased": false,
+        "activatedAt": 1791365975,
+        "goalDeadline": 1791366093,
+        "reviewDeadline": 1791366123
+      },
+      {
+        "address": "61G6yXSjPvAw86g3iPnyaV2cuytZzEJGrRrEBVeivTxD",
+        "mode": "single",
+        "status": "draft",
+        "refundReleased": false,
+        "activatedAt": 0,
+        "goalDeadline": 1791365856,
+        "reviewDeadline": 1791365886
+      }
+    ]
+  },
+  "creReceipts": [
+    {
+      "address": "3wJrcVre531zA5KkRGKCe7AjZrfzcoo96eokUVwWuZAx",
+      "operation": 3,
+      "result": "UNKNOWN",
+      "txStatus": 2,
+      "receiverStatus": 0,
+      "signature": "3XFVnHzABZn2v7ZRy9YPSeeJ1jAT67kSVfA61rXJRFfM2ZhVewQr56t7D46JHB9nBq7upzJq9zQfXt18FL8kdSh6",
+      "dryRun": false
+    },
+    {
+      "address": "EGhssuwcSny2qkgW5wE8tLSLW1kjD5afou75sxxGL54o",
+      "operation": 1,
+      "result": "FAIL",
+      "txStatus": 2,
+      "receiverStatus": 0,
+      "signature": "dpptbKk5WdJSMXHiMWGaHM9AmB5RkQV8xPefnzrg5frfR1RvQ1Ayz1w75LWemCyXfMpfwoyAzC7HYNrX9LepMp4",
+      "dryRun": false
+    },
+    {
+      "address": "8zZrYy1vxKoyvVjj1dJSTUwySmXVzAmWVY1L9UP1SxnQ",
+      "operation": 2,
+      "result": "UNKNOWN",
+      "txStatus": 2,
+      "receiverStatus": 0,
+      "signature": "5c3DFTvykwJu4bmug3SeQUQdmAR3RSJ6XDRBtBqRp2FmAwWsYKoMoMhyjN2VxfFSYdKYPdEJvrx6HZk8Q9of1bWF",
+      "dryRun": false
+    }
+  ]
+}

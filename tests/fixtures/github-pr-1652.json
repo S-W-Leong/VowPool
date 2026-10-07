@@ -1,0 +1,18 @@
+{
+  "source": "https://api.github.com/repos/smartcontractkit/chainlink-solana/pulls/1652",
+  "capturedAt": "2026-10-07T09:41:58.762444+00:00",
+  "body": {
+    "number": 1652,
+    "merged": true,
+    "merged_at": "2026-10-05T21:42:48Z",
+    "base": {
+      "ref": "develop",
+      "repo": {
+        "name": "chainlink-solana",
+        "owner": {
+          "login": "smartcontractkit"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+import {it,expect} from 'vitest';
+import {Keypair,PublicKey} from '@solana/web3.js';
+import {Buffer} from 'buffer';
+import {address as solanaAddress} from '@solana/addresses';
+import {hashGithubConfig} from '../../../../packages/shared/src/terms';
+import {selectCandidates,validateFrozenAccount,operationFor,compactGithubObservation} from '../processing';
+import {Lifecycle,VOWPOOL_PROGRAM_ID} from '../generated/Vowpool';
+const program=VOWPOOL_PROGRAM_ID,owner=Keypair.generate().publicKey,founder=Keypair.generate().publicKey;
+const group=PublicKey.findProgramAddressSync([Buffer.from('group'),founder.toBuffer()],new PublicKey(program))[0].toBase58();
+const address=PublicKey.findProgramAddressSync([Buffer.from('commitment'),new PublicKey(group).toBuffer(),owner.toBuffer(),Buffer.alloc(8,1)],new PublicKey(program))[0].toBase58();
+const policy={forwarder:solanaAddress(Keypair.generate().publicKey.toBase58()),forwarderState:solanaAddress(Keypair.generate().publicKey.toBase58()),workflowCid:Array(32).fill(1),workflowName:Array(10).fill(2),workflowOwner:Array(20).fill(3)};
+const github={owner:'alice',repo:'project',pr:1,targetBranch:'main',policyVersion:1 as const};
+const c:any={group,owner:owner.toBase58(),nonce:72340172838076673n,mode:3,status:Lifecycle.Active,activatedAt:1000n,goalDeadline:1100n,reviewDeadline:1200n,hardDeadline:174000n,github,policy,refundReleased:false,configHash:Array.from(hashGithubConfig({program,group,commitment:address,...policy},github,{goalDeadline:1100,reviewDeadline:1200,hardDeadline:174000}))};
+const g:any={founder:founder.toBase58(),policy};
+it('validates frozen configuration independently of candidate metadata',()=>expect(validateFrozenAccount(program,group,address,g,c,policy)).toEqual(c));
+it.each(['hash','group','address','policy'])('rejects corrupted %s binding',kind=>{const altered=structuredClone(c);if(kind==='hash')altered.configHash[0]^=1;if(kind==='group')altered.group=owner.toBase58();if(kind==='policy')altered.policy.workflowOwner[0]^=1;expect(()=>validateFrozenAccount(program,group,kind==='address'?owner.toBase58():address,g,altered,policy)).toThrow();});
+it('skips malformed hints, deduplicates and rotates five-item batches',()=>{const addresses=Array.from({length:12},()=>Keypair.generate().publicKey.toBase58());expect(selectCandidates(['bad',...addresses,addresses[0]],0)).toEqual(addresses.slice(0,5));expect(selectCandidates(addresses,30)).toEqual(addresses.slice(5,10));});
+it('preserves distinct unresolved and peer expiry boundaries',()=>{expect(operationFor(c,174000,'UNKNOWN')).toBe(null);expect(operationFor(c,174001,'UNKNOWN')).toBe(4);expect(operationFor({...c,mode:0},1200,'UNKNOWN')).toBe(null);expect(operationFor({...c,mode:0},1201,'UNKNOWN')).toBe(2);expect(operationFor({...c,status:Lifecycle.Unresolved},200000,'UNKNOWN')).toBe(3);});
+it('outcome delivery and refund remain separate operations',()=>{expect(operationFor(c,1050,'SUCCESS')).toBe(0);expect(operationFor({...c,status:Lifecycle.Succeeded},1051,'UNKNOWN')).toBe(3);expect(operationFor({...c,status:Lifecycle.Succeeded,refundReleased:true},1051,'UNKNOWN')).toBe(null);});
+it('reduces GitHub responses to schema-validated consensus fields',()=>{const response={number:1,merged:true,merged_at:'1970-01-01T00:17:30Z',base:{ref:'main',repo:{name:'project',owner:{login:'alice'}}},body:'x'.repeat(50000)};const compact=compactGithubObservation(200,JSON.stringify(response));expect(JSON.stringify(compact).length).toBeLessThan(500);expect(compact.body).not.toHaveProperty('body');expect(compactGithubObservation(429,'{}').body).toBe(null);expect(compactGithubObservation(200,'{}').body).toBe(null);});
+it('uses validated chain time when the runtime clock is ahead',async()=>{
+ const {chainObservationTime}=await import('../processing');const bytes=Buffer.alloc(40);bytes.writeBigInt64LE(999n,32);
+ expect(chainObservationTime({owner:'Sysvar1111111111111111111111111111111111111',executable:false,data:[bytes.toString('base64'),'base64']},1000)).toBe(999);
+ expect(()=>chainObservationTime({owner:owner.toBase58(),executable:false,data:[bytes.toString('base64'),'base64']},1000)).toThrow();
+ expect(()=>chainObservationTime({owner:'Sysvar1111111111111111111111111111111111111',executable:false,data:['AA==','base64']},1000)).toThrow();
+});

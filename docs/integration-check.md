@@ -4,7 +4,7 @@ Started 7 October 2026, 15:46 Asia/Singapore. Same checkout and `main`, as reque
 
 Pinned tools: Node 24.11.1, Bun 1.3.11, host Rust 1.96.0, Anchor 0.32.1, Agave/Solana 2.3.0, CRE CLI 1.37.0. Tools live in ignored `.tools/`. Root Bun lockfile pins JS dependencies. Anchor's documented compatible Solana release is 2.3.0: https://www.anchor-lang.com/docs/updates/release-notes/0-32-1.
 
-CRE `whoami` and unattended `init` failed with **authentication required**. Browser login has been opened; account creation/authentication belongs to the user. No simulation, deployment or live report transaction has succeeded yet.
+Initial CRE authentication failure was resolved by the user through browser login. Native simulation and official mock-forwarder Devnet writes now pass. Live registry deployment remains unavailable for the current account.
 
 Authentication design checked against upstream forwarder source and documentation:
 
@@ -16,13 +16,13 @@ Authentication design checked against upstream forwarder source and documentatio
 
 Official docs list Devnet simulation forwarder `7kuEAA3mSC1Tz8gQjnvH7bKFda9xSPRRin9SZbH49cNK`, state `5Tipz3yhTBdVsDbaBxZkrp7Gjf3brGq5SKkxReefPMP7`; live forwarder `CXsKEJcs25TQEYU2e5jZ8QTPE3ffMLZhH6BWHrdcCCB5`, state `8QoomCQyPSkJ8WopJbX9B4HyvrFzziwvJdU8hZE6DCr9`. These are documented references, **not verified tenant configuration or deployed VowPool state**. Cross-check chain accounts and tenant access before configuring a funded group.
 
-Disposable program/local payer/deployer/transmitter keys generated in `.tools/keys/`, permissions 0600; no existing wallet read or member key held by the server. Public program ID: `A2JT4HUJYEd3BL5xPXRiaXjvoFSMetY8zvLEPmRAxXPf`. Not deployed. Local mock forwarder is a deliberately unrestricted test double and must never be deployed to Devnet.
+Disposable program/local payer/deployer/transmitter keys generated in `.tools/keys/`, permissions 0600; no existing wallet read or member key held by the server. Public program ID: `A2JT4HUJYEd3BL5xPXRiaXjvoFSMetY8zvLEPmRAxXPf`. Deployed on Devnet, with public receipt below. Local mock forwarder is a deliberately unrestricted test double and must never be deployed to Devnet.
 
 Verification evidence and remaining limitations will be appended as checks finish.
 
 Checkpoint verification: compiled receiver negative tests first failed 4/5 against permissive baseline, then passed 5/5 against authenticated receiver on Solana local validator 2.3.0, with an authorized mock-forwarder CPI. `program_autofixer` returned no issues and `require_another_tool_call_after_fixing=false` for concatenated receiver/state Rust. Shared suite 48/48; Rust canonical tests 3/3.
 
-CRE browser login succeeded. `cre whoami` reports deployment access **not enabled**. Native receiver-free simulation is being exercised; live registry deployment remains unavailable. User funded disposable keys; Devnet CLI confirmed deployer 5 SOL and transmitter 0.1 SOL. Earlier RPC faucet requests failed.
+CRE browser login succeeded. `cre whoami` reports deployment access **not enabled**. Native receiver-free simulation passed; live registry deployment remains unavailable. User funded disposable keys; Devnet CLI confirmed deployer 5 SOL and transmitter 0.1 SOL. Earlier RPC faucet requests failed.
 
 SBF Rust/Cargo is 1.84.0 from platform-tools v1.48. Cargo.lock pins compatible transitive dependencies after an MSRV/edition metadata scan: blake3 1.8.2, zeroize 1.8.2, zeroize_derive 1.4.2, proc-macro-crate 3.3.0, indexmap 2.11.4, unicode-segmentation 1.12.0. Default `anchor build` is scoped to vowpool; build native mock separately with `cargo build-sbf --manifest-path programs/mock-forwarder/Cargo.toml`.
 
@@ -39,3 +39,29 @@ Full lifecycle verification: 24 compiled SBF tests in LiteSVM 0.6.0, plus one re
 ### Devnet program deployment
 
 The full program was deployed on 2026-10-07. The public RPC rate-limited the first RPC write attempt; retry reused its buffer through QUIC and succeeded. `solana program show` confirmed the executable loader-owned account, 428,800 bytes, slot 508399160 and retained deployer upgrade authority. Public configuration and receipt are in `deployments/devnet.json`. Group/mint bootstrap still requires the fixed member roster; this receipt is not a funded commitment or live CRE receipt.
+
+### HTTP and workflow binding
+
+CRE SDK 1.23.0 does not expose a per-request redirect option. Official Chainlink source at `eb311970f573687b0af54d089f246262ef96d333` explicitly disables redirects in both the simulation HTTP action and real gateway (`https://github.com/smartcontractkit/chainlink/blob/eb311970f573687b0af54d089f246262ef96d333/core/capabilities/fakes/http_action.go`, `core/services/gateway/network/httpclient.go`). GitHub responses are reduced to validated fields before identical consensus, under a 256 KiB payload cap.
+
+The actual signed report's CID/name/owner bytes are checked against the frozen group before delivery. They are not embedded in their own workflow config (which would change the workflow hash). A configured but absent group produces only a policy metadata preflight, with no chain write. Native simulation uses fixed test CID (0x11 repeated) and owner (0xaa repeated); those values are ONLY suitable for a labeled development fixture trusting the mock forwarder. A live group requires the actual deployed workflow identity, checked against registry/report evidence; never initialize a live group with simulator defaults. Any binary/config update requires a new group policy for future commitments. The receiver also independently checks metadata and forwarder PDA authorization.
+
+The tenant supported-chains listing currently returns EVM entries and no Solana entry. Documented mock/live forwarder accounts were checked directly on Devnet: both programs are executable and their state accounts are owned by their corresponding programs. This confirms addresses, not tenant live deployment access.
+
+### Full native staging write evidence
+
+Native CRE CLI 1.37.0 compiled the actual generated bindings and read the deployed program, frozen fixture configuration and real public GitHub response. The official mock forwarder delivered these **real Devnet transactions**:
+
+| Operation | Confirmed signature |
+| --- | --- |
+| Release recorded peer refund, 1.25 test tokens | `3XFVnHzABZn2v7ZRy9YPSeeJ1jAT67kSVfA61rXJRFfM2ZhVewQr56t7D46JHB9nBq7upzJq9zQfXt18FL8kdSh6` |
+| GitHub failure: PR1652 merged before activation | `dpptbKk5WdJSMXHiMWGaHM9AmB5RkQV8xPefnzrg5frfR1RvQ1Ayz1w75LWemCyXfMpfwoyAzC7HYNrX9LepMp4` |
+| Unapproved peer expiry | `5c3DFTvykwJu4bmug3SeQUQdmAR3RSJ6XDRBtBqRp2FmAwWsYKoMoMhyjN2VxfFSYdKYPdEJvrx6HZk8Q9of1bWF` |
+
+`scripts/smoke-devnet.ts` independently confirmed all 13 fixture lifecycle/CRE receipts, exact owner balance, terminal account statuses and liability/vault accounting at 2026-10-07T09:46:23Z. Results live in `deployments/staging-fixture-verification.json`. Active/refundable: 0. Pool/vault: 2,000,000 base units. Owner: 98,000,000 base units. One failed preparation left an unfunded expired draft; it has no financial effect and stays visible.
+
+These are fresh development wallets and simulator CID/owner metadata bound to the official public mock forwarder. **They do not prove a deployed DON identity, an actual qualifying post-activation merge, a real AI provider call or a user-member browser rehearsal.** The receiver authentication guard remains intact for live policies.
+
+One first deadline dry run returned an unclassified capability rejection and succeeded on retry. A direct read observed Devnet Clock one second behind runtime time. To avoid future report timestamps, the workflow now validates the 40-byte Clock sysvar and uses its median Unix timestamp bounded by runtime time. The receiver's `observed_at <= Clock::get()` guard remains unchanged. Layout/source: [Agave sysvars](https://docs.anza.xyz/runtime/sysvars), installed solana-clock 2.2.3. Final native dry run passed with no writes/replays after terminal settlement.
+
+The candidate endpoint in staging config is a temporary development tunnel. Update it before repeating the fixture; the tunnel process has no availability guarantee. Final workflow binary SHA-256: `2368ced66e91bbe02d82deda419f1baf6be387e1fee0c7bfb76cddc929a994d0`; staging config SHA-256: `53ffa60fe962669b15aa0fffbc20faad8aa97e018fd0fd6b33ac7f1801d5ac42`. Clock reads and fixture receipts establish the exercised adapter behavior; multi-node DON execution remains unverified.
