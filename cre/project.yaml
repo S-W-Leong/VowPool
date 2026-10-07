@@ -1,0 +1,13 @@
+# Generated with CRE 1.37.0 init, then adapted to Solana-only targets.
+local-simulation:
+  rpcs:
+    - chain-name: solana-devnet
+      url: https://api.devnet.solana.com
+staging-settings:
+  rpcs:
+    - chain-name: solana-devnet
+      url: https://api.devnet.solana.com
+production:
+  rpcs:
+    - chain-name: solana-devnet
+      url: https://api.devnet.solana.com

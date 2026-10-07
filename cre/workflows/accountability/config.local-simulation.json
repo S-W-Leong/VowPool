@@ -1,0 +1,14 @@
+{
+  "mode": "local-simulation",
+  "schedule": "*/30 * * * * *",
+  "samplePreviousPrice": "0",
+  "sample": {
+    "owner": "smartcontractkit",
+    "repo": "chainlink-solana",
+    "pr": 1652,
+    "targetBranch": "develop",
+    "policyVersion": 1,
+    "activatedAt": 0,
+    "goalDeadline": 2000000000
+  }
+}

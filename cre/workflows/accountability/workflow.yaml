@@ -1,0 +1,24 @@
+local-simulation:
+  user-workflow:
+    workflow-name: vowpool-local-simulation
+    deployment-registry: private
+  workflow-artifacts:
+    workflow-path: ./main.ts
+    config-path: ./config.local-simulation.json
+    secrets-path: ""
+staging-settings:
+  user-workflow:
+    workflow-name: vowpool-staging
+    deployment-registry: private
+  workflow-artifacts:
+    workflow-path: ./main.ts
+    config-path: ./config.staging.json
+    secrets-path: ""
+production:
+  user-workflow:
+    workflow-name: vowpool-devnet
+    deployment-registry: private
+  workflow-artifacts:
+    workflow-path: ./main.ts
+    config-path: ./config.production.json
+    secrets-path: ""

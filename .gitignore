@@ -1,0 +1,13 @@
+.DS_Store
+.tools/
+.superpowers/
+node_modules/
+target/
+.next/
+dist/
+.data/
+.env*
+!.env.example
+*keypair*.json
+*.wasm
+*.log
