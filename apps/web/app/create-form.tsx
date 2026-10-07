@@ -1,5 +1,6 @@
 'use client';
 import {useState} from 'react';
+import SelectField from './select-field';
 import {draftSchema,type CommitmentDraft,type VerificationMode} from '../../../packages/shared/src/schema';
 import {singaporeLocalToUtc,displayTime} from '../../../packages/shared/src/time';
 import {type GroupView} from '../lib/chain';
@@ -17,7 +18,7 @@ export default function CreateForm({group,owner,busy,onCreate,onClose}:{group:Gr
  {confirmed?<div><h3>Confirm the frozen terms</h3><p>{confirmed.goal}</p><p className="muted">{confirmed.criteria}</p><dl className="facts"><div><dt>Stake</dt><dd>{confirmed.stake} test tokens</dd></div><div><dt>Verification</dt><dd>{modeLabels[confirmed.mode]}</dd></div><div><dt>Goal deadline</dt><dd>{displayTime(confirmed.goalDeadline)} SGT</dd></div><div><dt>Review cutoff</dt><dd>{displayTime(confirmed.reviewDeadline)} SGT</dd></div></dl>{confirmed.github?<p>PR #{confirmed.github.pr} in {confirmed.github.owner}/{confirmed.github.repo}, merged into <strong>{confirmed.github.targetBranch}</strong> after activation and by the goal deadline.</p>:<p>All appointed reviewers must acknowledge before activation. Missing required approval by the review cutoff forfeits the stake to the group.</p>}<p className="notice">These terms cannot be edited. Creation records the terms; locking the stake is a separate wallet action.</p><div className="button-row"><button disabled={busy} onClick={()=>setConfirmed(null)} className="quiet">Edit terms</button><button disabled={busy} onClick={()=>onCreate(confirmed)}>{busy?'Waiting for wallet…':'Create commitment'}</button></div></div>:<form onSubmit={review}>
  <p className="form-hint">Fields marked * are required. AI assistance is optional.</p>
  <label>What will you do? *<input required value={goal} onChange={e=>setGoal(e.target.value)} maxLength={500} placeholder="Ship the sign-in flow"/></label><label>What counts as complete? *<textarea required value={criteria} onChange={e=>setCriteria(e.target.value)} maxLength={2000} placeholder="State the exact result your verifier will review."/></label>
- <label>Verification mode *<select aria-label="Verification mode" value={mode} onChange={e=>{setMode(e.target.value as VerificationMode);setReviewers([]);}}>{Object.entries(modeLabels).map(([k,v])=><option key={k} value={k}>{v}</option>)}</select></label>
+ <SelectField label="Verification mode *" value={mode} disabled={busy} onChange={value=>{setMode(value as VerificationMode);setReviewers([]);}} options={Object.entries(modeLabels).map(([value,label])=>({value,label}))}/>
  <details className="ai-box">
   <summary>Draft with AI <span className="optional-label">· Optional</span></summary>
   <p className="ai-intro">Already know your terms? Skip this section and fill in the form yourself.</p>
