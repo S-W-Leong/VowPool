@@ -33,14 +33,16 @@ Do not relabel the existing pre-activation merge as a qualifying success. Do not
 
 Use a browser with the actual member wallet extension. Record only the product, public receipts and labeled simulation output. Keep credentials and key files outside the recording. The pitch deck will include a recording on its demo slide after the member rehearsal. Before that, any draft deck must visibly identify pending acceptance work.
 
-Record the walkthrough with the supported macOS screen-recording UI or have the user operate that final step. Save the actual file under `deliverables/`, embed it in the deck, and test playback in Keynote/PowerPoint. The submission plan requires a `.ppt` or `.keynote` deck and a judge-accessible Google Drive link. A `.pptx` draft alone does not satisfy that requirement, and renaming its extension does not convert it.
+Record the walkthrough with the supported macOS screen-recording UI or have the user operate that final step. Save the actual file under `deliverables/`, embed it in the deck, and test playback in Keynote/PowerPoint. The eight-slide draft is saved as a native `deliverables/vowpool-pitch-draft.key`, with an editable PPTX counterpart. Native Keynote import and save were exercised, including the exact 1.25-token chart label. No recording is embedded yet.
+
+The submission wording says `.ppt` or `.keynote`; current Keynote saved the native file as `.key`. Confirm that native Keynote format is accepted by the portal/organizer before final upload. Do not rename a file to imply a conversion. [Apple documents importing PowerPoint and saving as a Keynote presentation](https://support.apple.com/en-sg/guide/keynote/tan72232b56/mac). The public rehearsal preview is [temporary VowPool fixture](https://buyer-strand-hours-ross.trycloudflare.com), with local-process availability and SQLite persistence limits.
 
 ## Submission checklist
 
 1. Review the actual public files and final limitations before publishing the repository or shared-branch push. No remote currently exists.
 2. Start the production app and publish a stable hosted demo, or explicitly label a temporary tunnel with its uptime/storage limitations.
 3. Rehearse wallet switching, refreshed pages, real evidence signing and confirmed account balances.
-4. Complete the recording, embed it, export `.keynote`/supported `.ppt`, and upload the final deck to Google Drive with judge access.
+4. Complete the recording, embed it, confirm the accepted native Keynote/PowerPoint format, and upload the final deck to Google Drive with judge access.
 5. Provide separate repository, hosted demo and Chainlink simulation/deployment evidence links.
 6. Confirm partner-track eligibility with the organizer. The plan records Solana check-ins 2/2 and Chainlink 1/2 with RSVP closed at inspection. Do not assume this resolves eligibility.
 7. Submit before the Singapore deadline and preserve the actual portal receipt. No submission has been made.

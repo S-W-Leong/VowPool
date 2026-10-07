@@ -17,6 +17,16 @@
     "initialTransmitterSol": "0.1",
     "postDeployDeployerLamports": "2817844040",
     "postDeployTransmitterLamports": "100000000",
-    "confirmedBalanceSlot": 508401948
-  }
+    "confirmedBalanceSlot": 508401948,
+    "latestConfirmedBalances": {
+      "observedAt": "2026-10-07T10:12:12.208Z",
+      "slot": 508420404,
+      "deployerLamports": "2753765360",
+      "transmitterLamports": "99985000"
+    }
+  },
+  "groupInitialized": false,
+  "confirmedGroup": null,
+  "exportedAt": "2026-10-07T10:14:54.477Z",
+  "idl": "vowpool.json"
 }

@@ -51,7 +51,12 @@ The local mock is an unrestricted test double. Never deploy it to Devnet. Exact 
 
 ```sh
 bun scripts/smoke-devnet.ts deployments/staging-fixture.json
+bun scripts/export-deployment.ts deployments/devnet.json .tools/keys/devnet-deployer.json
 ```
+
+The exporter checks Devnet, the deployed executable, actual loader metadata and upgrade authority. An initialized group additionally requires matching mint, vault and token authority. It writes only public configuration and an IDL copy; its CLI signer file is never copied into the output.
+
+Current rehearsal preview: [temporary VowPool fixture](https://buyer-strand-hours-ross.trycloudflare.com). It depends on this machine and its SQLite disk staying available. Draft presentation files and their verification notes are in `deliverables/`; recording and final upload are pending.
 
 ## Prepare the actual fixed group
 
