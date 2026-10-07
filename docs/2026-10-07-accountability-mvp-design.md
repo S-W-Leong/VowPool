@@ -207,11 +207,11 @@ CRE network deployment requires access approval. Confirm account access, Devnet 
 
 ### Dashboard
 
-One group dashboard shows available communal budget, the connected member’s active stakes and refundable amount. Tabs: My commitments, Needs my action, Group activity.
+The approved visual direction is minimal Pact Club: warm ivory, forest green, editorial serif headings, readable sans-serif controls and a restrained ripple mark. Use one navigation row: Commitments, Reviews, Pool. No repeated tabs or dashboard sidebar.
 
-Needs my action includes reviewer invitations, acknowledged commitments ready to fund, commitments awaiting evidence, reviews and unpaid refunds. There are no automated messaging reminders.
+Commitments shows the connected member’s promises, a compact summary of locked stakes/refunds and a quiet link to the shared pool. Reviews contains reviewer invitations and eligible completion reviews; role acceptance and approval remain separate actions on the detail view. Owner funding and refund actions remain on their commitments. Pool contains the available communal budget, group commitments and public account/rule details, with treasury controls limited to the existing authorized treasurer. Permissionless expiry/unresolved/refund actions remain accessible through group commitment details. There are no automated messaging reminders.
 
-Every card displays the owner, goal summary, stake, approval mode, relevant deadlines and current status. Financial/status values come from confirmed program account state. Display explorer links for Devnet transactions. If goal metadata is missing or its hash does not match, show that explicitly rather than displaying substituted terms as authentic.
+Each list row shows the goal, stake, one relevant deadline/status and a next action. Full terms, verification mode, owner, reviewer records and original terms export live in the focused detail view. Creation and detail replace the list while open. Financial/status values still come from confirmed program accounts; unavailable metadata is explicitly labeled. Keep wallet transaction phases and Devnet receipts visible. This presentation change does not alter permissions, settlement rules or custody.
 
 ### Creation form and AI configuration
 
