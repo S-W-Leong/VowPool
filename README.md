@@ -112,6 +112,8 @@ A: one appointed reviewer. B: all appointed reviewers. Each appointed reviewer a
 
 Goal text, evidence and progress stay offchain. Canonical Borsh hashes bind terms/configuration; immutable onchain fields independently bind financial data. Export original terms before relying on storage. Evidence requires the owner’s wallet signature over a commitment-bound, one-use challenge. SQLite uses WAL on the host filesystem and has no outcome authority.
 
+Unsupported/unreadable commitment records do not suppress healthy records or candidate discovery. The app links affected accounts and shows wallet-derived totals as unknown when the list may be incomplete. The confirmed group pool remains independent of those display totals; no unreadable record is treated as failure or erased onchain.
+
 A/B/C require recorded approval by the review cutoff. D accepts only the exact PR/branch with `activated_at < merged_at <= goal_deadline`. API errors are UNKNOWN. Inconclusive verification more than 48 hours after review becomes a distinct unresolved refund. Outcome and payout are separate; failed token delivery leaves a retryable entitlement. Permissionless peer expiry, recorded refund and D unresolved resolution work from the detail page. Pool withdrawal uses only recorded forfeitures and the fixed treasury recipient, protecting active escrow and unpaid refunds. Donations do not create spendable pool credit.
 
 AI drafts schema-validated configuration for explicit user review. It cannot generate executable workflows, approve completion or move funds. Repository/PR identifiers absent from the user’s input are cleared and requested. Rate/size bounds protect the server routes. Mainnet and real funds are outside this demo.
